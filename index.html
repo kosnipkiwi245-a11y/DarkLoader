@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DarkLoader Online</title>
 
+<meta name="theme-color" content="#090000">
+<link rel="icon" href='data:image/svg+xml,
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+<rect width="128" height="128" rx="26" fill="%23060000"/>
+<path d="M31 20h38c25 0 42 17 42 44s-17 44-42 44H31V20z" fill="%23111111" stroke="%23ff1b1b" stroke-width="7"/>
+<path d="M51 42h16c13 0 22 8 22 22s-9 22-22 22H51V42z" fill="%23ff1b1b"/>
+<path d="M72 12l-8 18h13l-17 31 4-24H52l12-25z" fill="%23ff7a00"/>
+</svg>'>
+
+
 <style>
 *{box-sizing:border-box}
 :root{--red:#ff1b1b;--panel:rgba(12,12,12,.93);--blue:#1f9fff;--green:#00ff88;--orange:#ff9f1c}
@@ -73,16 +83,83 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 1
 .notif-actions{display:flex;gap:8px;flex-wrap:wrap}
 .notif-actions button{padding:8px 10px;font-size:12px}
 
+
+/* DARKLOADER BRAND SYSTEM */
+body{cursor:crosshair}
+a,button,.juego,.friend-name,.avatar,.color-dot{cursor:pointer}
+.dl-logo-svg{width:52px;height:52px;filter:drop-shadow(0 0 13px rgba(255,0,0,.8));animation:logoPulse 2.8s infinite ease-in-out}
+.dl-logo-big{width:96px;height:96px;filter:drop-shadow(0 0 25px rgba(255,0,0,.9));animation:logoFloat 3.4s infinite ease-in-out}
+@keyframes logoPulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 10px rgba(255,0,0,.65))}50%{transform:scale(1.06);filter:drop-shadow(0 0 22px rgba(255,70,0,1))}}
+@keyframes logoFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(-2deg)}}
+.splash-screen{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at center,#290000,#050505 55%,#000);display:flex;align-items:center;justify-content:center;text-align:center;transition:.8s ease}
+.splash-screen.hide{opacity:0;pointer-events:none}
+.splash-card{border:1px solid var(--red);border-radius:26px;padding:38px;width:min(520px,92%);background:rgba(0,0,0,.58);box-shadow:0 0 45px rgba(255,0,0,.45);backdrop-filter:blur(8px)}
+.splash-title{font-size:42px;color:var(--red);font-weight:900;letter-spacing:3px;text-shadow:0 0 20px red;margin:12px 0}
+.loading-bar{height:10px;background:#171717;border:1px solid #333;border-radius:999px;overflow:hidden;margin-top:20px}
+.loading-bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#7a0000,#ff1b1b,#ff7a00);animation:loadBar 2.2s ease forwards}
+@keyframes loadBar{to{width:100%}}
+.glitch{position:relative}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden;opacity:.55}
+.glitch::before{color:#ff2a2a;transform:translate(2px,-1px);animation:glitchA 2.4s infinite linear alternate-reverse}
+.glitch::after{color:#1f9fff;transform:translate(-2px,1px);animation:glitchB 1.8s infinite linear alternate-reverse}
+@keyframes glitchA{0%{clip-path:inset(0 0 90% 0)}20%{clip-path:inset(25% 0 55% 0)}40%{clip-path:inset(65% 0 20% 0)}60%{clip-path:inset(10% 0 70% 0)}100%{clip-path:inset(75% 0 5% 0)}}
+@keyframes glitchB{0%{clip-path:inset(80% 0 0 0)}25%{clip-path:inset(15% 0 70% 0)}50%{clip-path:inset(50% 0 30% 0)}75%{clip-path:inset(5% 0 85% 0)}100%{clip-path:inset(35% 0 45% 0)}}
+.brand-name{display:flex;align-items:center;gap:12px}
+.logo-icon{background:transparent!important;border:none!important;box-shadow:none!important}
+.intro-sub{color:#aaa;font-size:13px;letter-spacing:2px;text-transform:uppercase}
+
 @media(max-width:1000px){.social-grid{grid-template-columns:1fr}.layout{flex-direction:column}.sidebar{width:100%;min-height:auto}.tooltip{position:static;width:100%;margin-top:10px}.navbar{height:auto;flex-direction:column;gap:12px;padding:16px}.logo-main h1{font-size:38px}.hero h1{font-size:32px}.perfil-top{flex-direction:column;text-align:center}}
 </style>
 </head>
 <body>
 
+<div id="splash" class="splash-screen">
+  <div class="splash-card">
+    <svg class="dl-logo-big" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-label="DarkLoader Logo">
+  <defs>
+    <linearGradient id="gDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151515"/>
+      <stop offset="1" stop-color="#050000"/>
+    </linearGradient>
+    <linearGradient id="gRed" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7a00"/>
+      <stop offset=".45" stop-color="#ff1b1b"/>
+      <stop offset="1" stop-color="#7a0000"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="26" fill="#060000"/>
+  <path d="M31 20h38c25 0 42 17 42 44s-17 44-42 44H31V20z" fill="url(#gDark)" stroke="#ff1b1b" stroke-width="7"/>
+  <path d="M51 42h16c13 0 22 8 22 22s-9 22-22 22H51V42z" fill="url(#gRed)"/>
+  <path d="M72 12l-8 18h13l-17 31 4-24H52l12-25z" fill="#ff7a00"/>
+</svg>
+    <div class="splash-title glitch" data-text="DARKLOADER">DARKLOADER</div>
+    <div class="intro-sub">Online Gaming Hub</div>
+    <div class="loading-bar"><span></span></div>
+  </div>
+</div>
+
+
 <canvas id="fondoAnimado"></canvas>
 
 <section id="pantallaInicio" class="pantalla-inicio">
   <div class="inicio-card">
-    <div class="logo-main"><div class="logo-icon">🔥</div><h1>DARKLOADER</h1></div>
+    <div class="logo-main"><div class="logo-icon"><svg class="dl-logo-big" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-label="DarkLoader Logo">
+  <defs>
+    <linearGradient id="gDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151515"/>
+      <stop offset="1" stop-color="#050000"/>
+    </linearGradient>
+    <linearGradient id="gRed" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7a00"/>
+      <stop offset=".45" stop-color="#ff1b1b"/>
+      <stop offset="1" stop-color="#7a0000"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="26" fill="#060000"/>
+  <path d="M31 20h38c25 0 42 17 42 44s-17 44-42 44H31V20z" fill="url(#gDark)" stroke="#ff1b1b" stroke-width="7"/>
+  <path d="M51 42h16c13 0 22 8 22 22s-9 22-22 22H51V42z" fill="url(#gRed)"/>
+  <path d="M72 12l-8 18h13l-17 31 4-24H52l12-25z" fill="#ff7a00"/>
+</svg></div><h1 class="glitch" data-text="DARKLOADER">DARKLOADER</h1></div>
     <p class="slogan">Catálogo gamer online con Firebase: usuarios reales, amigos, solicitudes y chat en tiempo real.</p>
     <button onclick="mostrarLogin()">CONTINUAR</button>
     <button class="secundario" onclick="toggleMusica()">🎵 Música</button>
@@ -116,8 +193,30 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 1
 
   <div class="login-card oculto" id="recuperarCard">
     <h2>Recuperar contraseña</h2>
+    <p>Escribe tu correo. Firebase enviará un correo oficial con un enlace/código seguro para cambiar la contraseña.</p>
+
     <input id="correoRecuperacion" type="email" placeholder="Correo electrónico registrado">
     <button onclick="recuperarPassword()">Enviar correo de recuperación</button>
+
+    <hr>
+
+    <p>Pega aquí el enlace completo que llegó al correo o solamente el código <b>oobCode</b>.</p>
+    <textarea id="codigoRecuperacion" placeholder="Pega aquí el enlace de recuperación o el código"></textarea>
+    <button class="azul" onclick="verificarCodigoRecuperacion()">Verificar código</button>
+
+    <div id="cambioPasswordBox" class="oculto">
+      <hr>
+      <div class="password-box">
+        <input id="nuevaClaveRecuperacion" type="password" placeholder="Nueva contraseña">
+        <button onclick="togglePassword('nuevaClaveRecuperacion')">👁</button>
+      </div>
+      <div class="password-box">
+        <input id="confirmarNuevaClaveRecuperacion" type="password" placeholder="Confirmar nueva contraseña">
+        <button onclick="togglePassword('confirmarNuevaClaveRecuperacion')">👁</button>
+      </div>
+      <button class="verde" onclick="cambiarPasswordConCodigo()">Cambiar contraseña</button>
+    </div>
+
     <button class="secundario" onclick="volverLogin()">Volver</button>
     <p id="mensajeRecuperacion" class="mensaje"></p>
   </div>
@@ -125,7 +224,23 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 1
 
 <section id="app" class="oculto">
   <header class="navbar">
-    <div class="brand"><div class="brand-mark">🔥</div>DARKLOADER</div>
+    <div class="brand"><div class="brand-mark"><svg class="dl-logo-svg" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-label="DarkLoader Logo">
+  <defs>
+    <linearGradient id="gDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151515"/>
+      <stop offset="1" stop-color="#050000"/>
+    </linearGradient>
+    <linearGradient id="gRed" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7a00"/>
+      <stop offset=".45" stop-color="#ff1b1b"/>
+      <stop offset="1" stop-color="#7a0000"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="26" fill="#060000"/>
+  <path d="M31 20h38c25 0 42 17 42 44s-17 44-42 44H31V20z" fill="url(#gDark)" stroke="#ff1b1b" stroke-width="7"/>
+  <path d="M51 42h16c13 0 22 8 22 22s-9 22-22 22H51V42z" fill="url(#gRed)"/>
+  <path d="M72 12l-8 18h13l-17 31 4-24H52l12-25z" fill="#ff7a00"/>
+</svg></div><span>DARKLOADER</span></div>
     <nav><a href="#" onclick="limpiarFiltro()">Tienda</a><a href="#" onclick="mostrarFavoritos()">Favoritos</a><a href="#" onclick="abrirSocial()">Amigos y chat</a><a href="#" onclick="abrirSocial('actividad')">Actividad</a></nav>
     <div class="nav-actions">
       <select id="estadoUsuario" onchange="cambiarEstado()" style="width:135px"><option value="online">🟢 En línea</option><option value="ausente">🟠 Ausente</option><option value="ocupado">🔴 Ocupado</option><option value="invisible">⚫ Invisible</option></select>
@@ -271,7 +386,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/fireba
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  sendPasswordResetEmail, signOut, onAuthStateChanged,
+  sendPasswordResetEmail, verifyPasswordResetCode, confirmPasswordReset, signOut, onAuthStateChanged,
   browserLocalPersistence, browserSessionPersistence, setPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import {
@@ -279,6 +394,15 @@ import {
   getDocs, onSnapshot, orderBy, serverTimestamp, updateDoc, deleteDoc,
   arrayUnion, arrayRemove, limit
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+
+// Splash intro
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const splash = document.getElementById("splash");
+    if (splash) splash.classList.add("hide");
+  }, 2300);
+});
 
 const firebaseConfig = {
   apiKey: "AIzaSyAUZW9NRdDoGkv58zQ6qRsAmUf4m63MIUY",
@@ -296,9 +420,9 @@ const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
 const juegos=[
-{nombre:"Undertale",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg",año:"2015",genero:"RPG, Indie",peso:"200 MB",descripcion:"RPG donde puedes luchar o perdonar enemigos. Tus decisiones cambian la historia.",requisitos:"Windows XP o superior • 3 GB RAM • 200 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_6ded97a2c98473ac1e8a2b3b7d143a2d3912ccf2.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_b9018b4d7cd0c14a1786b1e4d6e9ef9b72d2b0a4.600x338.jpg"],enlace:"http://mediafire.com/file/6f47x5lbjgjq9t7/Undertale.rar/file"},
-{nombre:"Hotline Miami",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg",año:"2012",genero:"Acción, Arcade, Indie",peso:"250 MB",descripcion:"Acción retro violenta con vista superior, música electrónica intensa y combates rápidos.",requisitos:"Windows XP/Vista/7 • 512 MB RAM • OpenGL 2.1 • 250 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_840d116d5c99f1de755c38b4c8af8b442a2ff319.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_4b078cc3e3c9b76f3c40eb8fca5a8e7f6fd033fd.600x338.jpg"],enlace:""},
-{nombre:"Cuphead",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg",año:"2017",genero:"Acción, Plataformas, Run & Gun",peso:"4 GB",descripcion:"Juego inspirado en caricaturas de los años 30, con jefes gigantes y mucha dificultad.",requisitos:"Windows 7 • 3 GB RAM • GeForce 9600 GT • 4 GB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_5389476f8a7a56f1d06bd8e3006c61c0b3a8d3ab.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_48f4f916d9b66e04df04b3fa4de1b1f6764ef99a.600x338.jpg"],enlace:""}
+{nombre:"Undertale",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg",año:"2015",genero:"RPG, Indie",peso:"200 MB",descripcion:"RPG donde puedes luchar o perdonar enemigos. Tus decisiones cambian la historia.",requisitos:"Windows XP o superior • 3 GB RAM • 200 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_6ded97a2c98473ac1e8a2b3b7d143a2d3912ccf2.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_b9018b4d7cd0c14a1786b1e4d6e9ef9b72d2b0a4.600x338.jpg"],enlace:"https://store.steampowered.com/app/391540/Undertale/"},
+{nombre:"Hotline Miami",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg",año:"2012",genero:"Acción, Arcade, Indie",peso:"250 MB",descripcion:"Acción retro violenta con vista superior, música electrónica intensa y combates rápidos.",requisitos:"Windows XP/Vista/7 • 512 MB RAM • OpenGL 2.1 • 250 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_840d116d5c99f1de755c38b4c8af8b442a2ff319.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_4b078cc3e3c9b76f3c40eb8fca5a8e7f6fd033fd.600x338.jpg"],enlace:"https://store.steampowered.com/app/219150/Hotline_Miami/"},
+{nombre:"Cuphead",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg",año:"2017",genero:"Acción, Plataformas, Run & Gun",peso:"4 GB",descripcion:"Juego inspirado en caricaturas de los años 30, con jefes gigantes y mucha dificultad.",requisitos:"Windows 7 • 3 GB RAM • GeForce 9600 GT • 4 GB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_5389476f8a7a56f1d06bd8e3006c61c0b3a8d3ab.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_48f4f916d9b66e04df04b3fa4de1b1f6764ef99a.600x338.jpg"],enlace:"https://store.steampowered.com/app/268910/Cuphead/"}
 ];
 
 let currentUser=null, currentProfile=null, unsubFriends=null, unsubRequests=null, unsubMessages=null, unsubActivity=null, unsubNotifs=null;
@@ -370,11 +494,82 @@ window.iniciarSesion=async()=>{
   }catch(e){alert("Error: "+e.message);}
 };
 
+let codigoResetVerificado="";
+
+function extraerOobCode(valor){
+  const v=(valor||"").trim();
+  if(!v) return "";
+  try{
+    const url=new URL(v);
+    return url.searchParams.get("oobCode") || "";
+  }catch(e){
+    return v;
+  }
+}
+
 window.recuperarPassword=async()=>{
   const email=$("correoRecuperacion").value.trim();
   if(!email) return $("mensajeRecuperacion").innerText="Escribe tu correo.";
-  try{await sendPasswordResetEmail(auth,email);$("mensajeRecuperacion").style.color="limegreen";$("mensajeRecuperacion").innerText="Correo de recuperación enviado.";}
-  catch(e){$("mensajeRecuperacion").innerText=e.message;}
+  try{
+    await sendPasswordResetEmail(auth,email);
+    $("mensajeRecuperacion").style.color="limegreen";
+    $("mensajeRecuperacion").innerText="Correo enviado. Revisa tu bandeja y pega aquí el enlace/código para cambiar la contraseña.";
+  }catch(e){
+    $("mensajeRecuperacion").style.color="#ff5555";
+    $("mensajeRecuperacion").innerText=e.message;
+  }
+};
+
+window.verificarCodigoRecuperacion=async()=>{
+  const code=extraerOobCode($("codigoRecuperacion").value);
+  if(!code){
+    $("mensajeRecuperacion").style.color="#ff5555";
+    $("mensajeRecuperacion").innerText="Pega el enlace o código de recuperación.";
+    return;
+  }
+  try{
+    const email=await verifyPasswordResetCode(auth,code);
+    codigoResetVerificado=code;
+    $("cambioPasswordBox").classList.remove("oculto");
+    $("mensajeRecuperacion").style.color="limegreen";
+    $("mensajeRecuperacion").innerText="Código verificado para: "+email+". Ahora escribe tu nueva contraseña.";
+  }catch(e){
+    codigoResetVerificado="";
+    $("cambioPasswordBox").classList.add("oculto");
+    $("mensajeRecuperacion").style.color="#ff5555";
+    $("mensajeRecuperacion").innerText="Código inválido o vencido: "+e.message;
+  }
+};
+
+window.cambiarPasswordConCodigo=async()=>{
+  const pass=$("nuevaClaveRecuperacion").value;
+  const confirm=$("confirmarNuevaClaveRecuperacion").value;
+  if(!codigoResetVerificado){
+    $("mensajeRecuperacion").style.color="#ff5555";
+    $("mensajeRecuperacion").innerText="Primero verifica el código.";
+    return;
+  }
+  if(pass.length<6){
+    $("mensajeRecuperacion").style.color="#ff5555";
+    $("mensajeRecuperacion").innerText="La contraseña debe tener al menos 6 caracteres.";
+    return;
+  }
+  if(pass!==confirm){
+    $("mensajeRecuperacion").style.color="#ff5555";
+    $("mensajeRecuperacion").innerText="Las contraseñas no coinciden.";
+    return;
+  }
+  try{
+    await confirmPasswordReset(auth,codigoResetVerificado,pass);
+    $("mensajeRecuperacion").style.color="limegreen";
+    $("mensajeRecuperacion").innerText="Contraseña cambiada correctamente. Ya puedes iniciar sesión.";
+    $("cambioPasswordBox").classList.add("oculto");
+    $("codigoRecuperacion").value="";
+    codigoResetVerificado="";
+  }catch(e){
+    $("mensajeRecuperacion").style.color="#ff5555";
+    $("mensajeRecuperacion").innerText=e.message;
+  }
 };
 
 async function cargarPerfil(uid){
