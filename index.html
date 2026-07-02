@@ -7,26 +7,20 @@
 
 <style>
 *{box-sizing:border-box}
-
 :root{
-  --rojo:#ff1b1b;
-  --rojo2:#8b0000;
-  --negro:#050505;
+  --red:#ff1b1b;
+  --dark:#050505;
   --panel:rgba(12,12,12,.92);
-  --borde:#2a2a2a;
-  --texto:#f2f2f2;
-  --gris:#aaa;
-  --azul:#1f9fff;
+  --border:#2a2a2a;
+  --blue:#1f9fff;
 }
-
 body{
   margin:0;
   background:#050505;
-  color:var(--texto);
-  font-family:Arial, Helvetica, sans-serif;
+  color:white;
+  font-family:Arial, sans-serif;
   overflow-x:hidden;
 }
-
 body::after{
   content:"";
   position:fixed;
@@ -35,10 +29,8 @@ body::after{
   background-size:cover;
   background-position:center;
   opacity:.25;
-  filter:blur(1px);
   animation:fondoJuegos 40s infinite ease-in-out;
 }
-
 @keyframes fondoJuegos{
   0%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg")}
   20%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg")}
@@ -47,29 +39,22 @@ body::after{
   80%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg")}
   100%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg")}
 }
-
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:
-    radial-gradient(circle at 20% 20%,rgba(255,0,0,.35),transparent 25%),
-    radial-gradient(circle at 80% 35%,rgba(255,70,0,.18),transparent 25%),
-    linear-gradient(120deg,rgba(0,0,0,.96),rgba(40,0,0,.85),rgba(0,0,0,.98));
+  background:linear-gradient(120deg,rgba(0,0,0,.96),rgba(80,0,0,.65),rgba(0,0,0,.98));
   z-index:-3;
 }
-
 canvas{
   position:fixed;
   inset:0;
   z-index:-2;
   opacity:.22;
 }
-
 .oculto{display:none!important}
-
-button,a.boton{
-  background:linear-gradient(135deg,var(--rojo),#9b0000);
+button,.boton{
+  background:linear-gradient(135deg,var(--red),#8b0000);
   color:white;
   border:none;
   padding:12px 18px;
@@ -80,17 +65,14 @@ button,a.boton{
   transition:.2s;
   display:inline-block;
 }
-
-button:hover,a.boton:hover{
+button:hover,.boton:hover{
   transform:translateY(-2px) scale(1.03);
   box-shadow:0 0 18px rgba(255,0,0,.55);
 }
-
 .secundario{
   background:#171717;
   border:1px solid #333;
 }
-
 input,select{
   width:100%;
   padding:12px;
@@ -101,128 +83,63 @@ input,select{
   border-radius:8px;
   outline:none;
 }
-
 input:focus,select:focus{
-  border-color:var(--rojo);
+  border-color:var(--red);
   box-shadow:0 0 12px rgba(255,0,0,.35);
 }
-
-.pantalla-inicio{
+.pantalla-inicio,.pantalla-login{
   min-height:100vh;
   display:flex;
-  align-items:center;
   justify-content:center;
-  text-align:center;
+  align-items:center;
   padding:25px;
+  text-align:center;
 }
-
-.inicio-card{
+.inicio-card,.login-card{
   width:min(760px,95%);
   background:rgba(0,0,0,.78);
   border:1px solid rgba(255,0,0,.55);
   border-radius:24px;
-  padding:45px;
+  padding:42px;
   box-shadow:0 0 45px rgba(255,0,0,.38);
   backdrop-filter:blur(8px);
 }
-
+.login-card{width:430px}
 .logo-main{
   display:flex;
-  align-items:center;
   justify-content:center;
-  gap:18px;
-  margin-bottom:15px;
+  align-items:center;
+  gap:16px;
 }
-
 .logo-icon{
-  width:78px;
-  height:78px;
+  width:76px;
+  height:76px;
   border-radius:20px;
-  background:
-    radial-gradient(circle at center,#ff3b3b 0 22%,#450000 23% 60%,#070707 61%);
-  border:2px solid var(--rojo);
-  box-shadow:0 0 25px red;
+  background:#170000;
+  border:2px solid var(--red);
   display:grid;
   place-items:center;
   font-size:38px;
+  box-shadow:0 0 25px red;
 }
-
 .logo-main h1{
-  margin:0;
-  font-size:64px;
-  color:var(--rojo);
-  letter-spacing:2px;
+  font-size:62px;
+  color:var(--red);
   text-shadow:0 0 18px red,0 0 55px #700;
+  margin:0;
 }
-
-.slogan{
-  color:#ddd;
-  font-size:18px;
-  margin-bottom:28px;
-}
-
-.inicio-actions{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-
-.pantalla-login{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:25px;
-}
-
-.login-card{
-  width:420px;
-  max-width:95%;
-  background:var(--panel);
-  border:1px solid rgba(255,0,0,.55);
-  padding:28px;
-  border-radius:18px;
-  box-shadow:0 0 35px rgba(255,0,0,.32);
-  text-align:center;
-  backdrop-filter:blur(8px);
-  animation:entrada .35s ease;
-}
-
-@keyframes entrada{
-  from{opacity:0;transform:translateY(25px) scale(.96)}
-  to{opacity:1;transform:translateY(0) scale(1)}
-}
-
-.login-card h2{
-  color:var(--rojo);
-  margin-top:0;
-}
-
-.password-box{
-  display:flex;
-  gap:8px;
-}
-
+.slogan{color:#ddd;font-size:18px}
+.password-box{display:flex;gap:8px}
 .password-box input{flex:1}
-
-.password-box button{
-  padding:10px 13px;
-}
-
 .check{
   display:flex;
-  align-items:center;
   gap:8px;
+  align-items:center;
+  justify-content:center;
   color:#ccc;
-  margin:10px 0;
   font-size:14px;
 }
-
-.check input{
-  width:auto;
-}
-
+.check input{width:auto}
 .barra{
   height:10px;
   background:#222;
@@ -230,30 +147,22 @@ input:focus,select:focus{
   overflow:hidden;
   margin:10px 0;
 }
-
 #barraSeguridad{
   height:100%;
   width:0%;
   background:red;
   transition:.25s;
 }
-
 .mensaje{
   min-height:22px;
   color:#ff5555;
   font-weight:bold;
 }
-
-hr{
-  border:0;
-  border-top:1px solid #252525;
-  margin:18px 0;
-}
-
+hr{border:0;border-top:1px solid #252525;margin:18px 0}
 .navbar{
   height:76px;
   background:rgba(5,5,5,.96);
-  border-bottom:2px solid var(--rojo);
+  border-bottom:2px solid var(--red);
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -263,62 +172,39 @@ hr{
   z-index:20;
   backdrop-filter:blur(10px);
 }
-
 .brand{
   display:flex;
   align-items:center;
   gap:12px;
-  font-weight:bold;
-  color:var(--rojo);
+  color:var(--red);
   font-size:24px;
+  font-weight:bold;
 }
-
 .brand-mark{
   width:42px;
   height:42px;
   border-radius:12px;
   background:#150000;
-  border:1px solid var(--rojo);
+  border:1px solid var(--red);
   display:grid;
   place-items:center;
-  box-shadow:0 0 15px rgba(255,0,0,.5);
 }
-
-.navbar nav a{
+.navbar a{
   color:#ccc;
   text-decoration:none;
   margin:0 10px;
   font-weight:bold;
 }
-
-.navbar nav a:hover{color:var(--rojo)}
-
-.nav-actions{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-
-.profile-mini{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:#ccc;
-}
-
+.navbar a:hover{color:var(--red)}
+.nav-actions{display:flex;gap:10px;align-items:center}
 .avatar{
   width:38px;
   height:38px;
   border-radius:50%;
   background:#222;
-  border:1px solid var(--rojo);
-  object-fit:cover;
+  border:1px solid var(--red);
 }
-
-.layout{
-  display:flex;
-}
-
+.layout{display:flex}
 .sidebar{
   width:260px;
   min-height:calc(100vh - 76px);
@@ -326,13 +212,7 @@ hr{
   border-right:1px solid #252525;
   padding:20px;
 }
-
-.sidebar h3{
-  color:var(--rojo);
-  font-size:14px;
-  margin-top:0;
-}
-
+.sidebar h3{color:var(--red)}
 .filtro{
   padding:12px;
   margin:10px 0;
@@ -342,13 +222,10 @@ hr{
   position:relative;
   cursor:pointer;
 }
-
 .filtro:hover{
-  background:#1b1b1b;
-  color:var(--rojo);
-  border-color:var(--rojo);
+  color:var(--red);
+  border-color:var(--red);
 }
-
 .tooltip{
   display:none;
   position:absolute;
@@ -356,72 +233,37 @@ hr{
   top:0;
   width:320px;
   background:#0d0d0d;
-  border:1px solid var(--rojo);
+  border:1px solid var(--red);
   border-radius:12px;
   padding:12px;
   z-index:50;
-  box-shadow:0 0 25px rgba(255,0,0,.25);
 }
-
 .filtro:hover .tooltip{
   display:flex;
   flex-wrap:wrap;
   gap:8px;
 }
-
-.tooltip button{
-  font-size:12px;
-  padding:8px 10px;
-}
-
-.contenido{
-  flex:1;
-  padding:28px;
-}
-
+.tooltip button{font-size:12px;padding:8px 10px}
+.contenido{flex:1;padding:28px}
 .hero{
   min-height:280px;
-  background:
-    linear-gradient(90deg,rgba(120,0,0,.85),rgba(0,0,0,.82)),
-    url("https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg") center/cover;
+  background:linear-gradient(90deg,rgba(120,0,0,.85),rgba(0,0,0,.82)),url("https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg") center/cover;
   border:1px solid #333;
   border-radius:22px;
   padding:42px;
   margin-bottom:25px;
+  display:flex;
+  align-items:center;
   box-shadow:0 0 30px rgba(255,0,0,.25);
-  display:flex;
-  align-items:center;
 }
-
-.hero h1{
-  color:var(--rojo);
-  font-size:46px;
-  margin:0 0 10px;
-}
-
-.hero p{
-  color:#ddd;
-  max-width:520px;
-}
-
-.search-row{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  margin-bottom:25px;
-  flex-wrap:wrap;
-}
-
-.buscador{
-  max-width:520px;
-}
-
+.hero h1{font-size:46px;color:var(--red);margin:0 0 10px}
+.search-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:25px}
+.buscador{max-width:520px}
 .catalogo{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(235px,1fr));
   gap:22px;
 }
-
 .juego{
   background:#101010;
   border:1px solid #222;
@@ -429,35 +271,20 @@ hr{
   overflow:hidden;
   cursor:pointer;
   transition:.25s;
-  position:relative;
 }
-
 .juego:hover{
   transform:translateY(-8px) scale(1.02);
-  border-color:var(--rojo);
+  border-color:var(--red);
   box-shadow:0 0 25px rgba(255,0,0,.45);
 }
-
 .juego img{
   width:100%;
   height:125px;
   object-fit:cover;
 }
-
-.juego-info{
-  padding:15px;
-}
-
-.juego-info h3{
-  margin:0 0 10px;
-}
-
-.meta{
-  color:#bbb;
-  font-size:13px;
-  line-height:1.55;
-}
-
+.juego-info{padding:15px}
+.juego-info h3{margin:0 0 10px}
+.meta{color:#bbb;font-size:13px;line-height:1.55}
 .badge{
   display:inline-block;
   background:#260000;
@@ -468,22 +295,19 @@ hr{
   font-size:12px;
   margin-top:8px;
 }
-
 .detalle-header{
   background:#080808;
-  border-bottom:2px solid var(--rojo);
+  border-bottom:2px solid var(--red);
   padding:20px 26px;
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-
 .detalle-contenido{
   max-width:1150px;
   margin:auto;
   padding:28px;
 }
-
 .capturas{
   display:flex;
   gap:16px;
@@ -491,7 +315,6 @@ hr{
   margin-bottom:25px;
   padding-bottom:8px;
 }
-
 .capturas img{
   min-width:340px;
   height:190px;
@@ -500,34 +323,20 @@ hr{
   border:1px solid #333;
   transition:.2s;
 }
-
 .capturas img:hover{
   transform:scale(1.03);
-  border-color:var(--rojo);
+  border-color:var(--red);
 }
-
 .detalle-info{
   background:var(--panel);
   border:1px solid #333;
   padding:28px;
   border-radius:18px;
 }
-
 .boton-mediafire{
-  display:inline-block;
   margin-top:20px;
   background:linear-gradient(135deg,#1f9fff,#0069c9);
-  color:white;
-  text-decoration:none;
-  padding:15px 26px;
-  border-radius:10px;
-  font-weight:bold;
 }
-
-.boton-mediafire:hover{
-  background:#42b7ff;
-}
-
 .footer{
   padding:28px;
   text-align:center;
@@ -535,23 +344,17 @@ hr{
   border-top:1px solid #222;
   background:rgba(0,0,0,.7);
 }
-
-.music-btn{
-  background:#111;
-  border:1px solid #333;
-}
-
 @media(max-width:850px){
   .layout{flex-direction:column}
   .sidebar{width:100%;min-height:auto}
   .tooltip{position:static;width:100%;margin-top:10px}
   .navbar{height:auto;flex-direction:column;gap:12px;padding:16px}
-  .navbar nav{display:flex;flex-wrap:wrap;justify-content:center}
   .logo-main h1{font-size:38px}
   .hero h1{font-size:32px}
 }
 </style>
 </head>
+
 <body>
 
 <canvas id="fondoAnimado"></canvas>
@@ -563,11 +366,9 @@ hr{
       <h1>DARKLOADER</h1>
     </div>
     <p class="slogan">Catálogo gamer oscuro, rápido y brutal.</p>
-    <div class="inicio-actions">
-      <button onclick="mostrarLogin()">CONTINUAR</button>
-      <button class="secundario" onclick="entrarInvitado()">Entrar como invitado</button>
-      <button class="music-btn" onclick="toggleMusica()">🎵 Música</button>
-    </div>
+    <button onclick="mostrarLogin()">CONTINUAR</button>
+    <button class="secundario" onclick="entrarInvitado()">Entrar como invitado</button>
+    <button class="secundario" onclick="toggleMusica()">🎵 Música</button>
   </div>
 </section>
 
@@ -575,7 +376,6 @@ hr{
 
   <div class="login-card" id="loginCard">
     <h2>Iniciar sesión</h2>
-
     <input id="loginUsuario" placeholder="Usuario">
     <input id="loginClave" type="password" placeholder="Contraseña">
 
@@ -587,13 +387,11 @@ hr{
     <button onclick="iniciarSesion()">Entrar</button>
     <button class="secundario" onclick="abrirRegistro()">Registrarse</button>
     <button class="secundario" onclick="abrirRecuperacion()">Recuperar cuenta</button>
-
     <p>Cuenta guardada solo en este navegador.</p>
   </div>
 
   <div class="login-card oculto" id="registroCard">
     <h2>Crear cuenta</h2>
-
     <input id="registroUsuario" placeholder="Crea tu nickname">
     <input id="registroCorreo" type="email" placeholder="Correo electrónico">
 
@@ -652,10 +450,7 @@ hr{
 
 <section id="app" class="oculto">
   <header class="navbar">
-    <div class="brand">
-      <div class="brand-mark">🔥</div>
-      DARKLOADER
-    </div>
+    <div class="brand"><div class="brand-mark">🔥</div>DARKLOADER</div>
 
     <nav>
       <a href="#" onclick="limpiarFiltro()">Tienda</a>
@@ -665,11 +460,9 @@ hr{
     </nav>
 
     <div class="nav-actions">
-      <button class="music-btn" onclick="toggleMusica()">🎵</button>
-      <div class="profile-mini">
-        <img id="miniAvatar" class="avatar" src="">
-        <span id="nombrePerfil">Invitado</span>
-      </div>
+      <button class="secundario" onclick="toggleMusica()">🎵</button>
+      <img id="miniAvatar" class="avatar" src="">
+      <span id="nombrePerfil">Invitado</span>
       <button onclick="cerrarSesion()">Salir</button>
     </div>
   </header>
@@ -725,7 +518,7 @@ hr{
       <section class="hero">
         <div>
           <h1>Catálogo DarkLoader</h1>
-          <p>Explora fichas, capturas, requisitos, favoritos y enlaces oficiales o recursos legales.</p>
+          <p>Explora fichas, capturas, requisitos, favoritos y wallpapers.</p>
           <button onclick="limpiarFiltro()">Explorar catálogo</button>
         </div>
       </section>
@@ -740,7 +533,7 @@ hr{
   </div>
 
   <footer class="footer">
-    DarkLoader © 2026 — Catálogo visual gamer. Proyecto personal.
+    DarkLoader © 2026 — Catálogo visual gamer.
   </footer>
 </section>
 
@@ -765,9 +558,410 @@ hr{
 
       <button id="favoritoBtn" onclick="toggleFavorito()">⭐ Agregar a favoritos</button>
 
-      <a id="detalleDescarga" class="boton-mediafire" href="#" target="_blank">
+      <a id="detalleDescarga" class="boton boton-mediafire" href="#" target="_blank">
         MediaFire
       </a>
     </div>
   </main>
 </section>
+
+<audio id="musicaFondo" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const juegos=[
+{
+nombre:"Among Us",
+imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg",
+año:"2018",
+genero:"Deducción social, Multijugador",
+peso:"250 MB",
+descripcion:"Among Us es un juego multijugador de deducción social donde la tripulación debe completar tareas mientras descubre a los impostores ocultos.",
+requisitos:"Windows 10 • 1 GB RAM • DirectX 10 • 250 MB disponibles",
+capturas:[
+"img/amongus/amongus1.webp",
+"img/amongus/amongus2.jpg",
+"img/amongus/amongus3.jpg",
+"img/amongus/amongus4.webp"
+],
+enlace:"LINK_MEDIAFIRE_WALLPAPERS_AQUI"
+},
+{
+nombre:"Mecha Chameleon",
+imagen:"https://images.unsplash.com/photo-1550745165-9bc0b252726f",
+año:"2024",
+genero:"Camuflaje, Party Game, Multijugador",
+peso:"2 GB",
+descripcion:"Personajes pequeños deben camuflarse pintándose del entorno para evitar ser descubiertos por un cazador.",
+requisitos:"Intel Core i5 • 8 GB RAM • GTX 1050 Ti o RX 570",
+capturas:["https://images.unsplash.com/photo-1511512578047-dfb367046420","https://images.unsplash.com/photo-1550745165-9bc0b252726f"],
+enlace:"#"
+},
+{
+nombre:"God of War 2018",
+imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg",
+año:"2022 PC",
+genero:"Acción, Aventura",
+peso:"70 GB",
+descripcion:"Kratos y Atreus viajan por los reinos nórdicos enfrentando criaturas legendarias y dioses.",
+requisitos:"Windows 10 64-bit • 8 GB RAM • GTX 960 mínimo • GTX 1060 recomendado",
+capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/ss_f1bff24d3967a21d303d95e11ed892e3d9113057.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/ss_6eccc970b6f4d4c8f747b5dd4c0b8b5349c9a99d.600x338.jpg"],
+enlace:"https://store.steampowered.com/app/1593500/God_of_War/"
+},
+{
+nombre:"Undertale",
+imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg",
+año:"2015",
+genero:"RPG, Indie",
+peso:"200 MB",
+descripcion:"RPG donde puedes luchar o perdonar enemigos. Tus decisiones cambian la historia.",
+requisitos:"Windows XP o superior • 3 GB RAM • 200 MB disponibles",
+capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_6ded97a2c98473ac1e8a2b3b7d143a2d3912ccf2.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_b9018b4d7cd0c14a1786b1e4d6e9ef9b72d2b0a4.600x338.jpg"],
+enlace:"https://store.steampowered.com/app/391540/Undertale/"
+},
+{
+nombre:"Cuphead",
+imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg",
+año:"2017",
+genero:"Acción, Plataformas, Run & Gun",
+peso:"4 GB",
+descripcion:"Juego inspirado en caricaturas de los años 30, con jefes gigantes y mucha dificultad.",
+requisitos:"Windows 7 • 3 GB RAM • GeForce 9600 GT • 4 GB disponibles",
+capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_5389476f8a7a56f1d06bd8e3006c61c0b3a8d3ab.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_48f4f916d9b66e04df04b3fa4de1b1f6764ef99a.600x338.jpg"],
+enlace:"https://store.steampowered.com/app/268910/Cuphead/"
+},
+{
+nombre:"Hotline Miami",
+imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg",
+año:"2012",
+genero:"Acción, Arcade, Indie",
+peso:"250 MB",
+descripcion:"Acción retro violenta con vista superior, música electrónica intensa y combates rápidos.",
+requisitos:"Windows XP/Vista/7 • 512 MB RAM • OpenGL 2.1 • 250 MB disponibles",
+capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_840d116d5c99f1de755c38b4c8af8b442a2ff319.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_4b078cc3e3c9b76f3c40eb8fca5a8e7f6fd033fd.600x338.jpg"],
+enlace:"https://store.steampowered.com/app/219150/Hotline_Miami/"
+}
+];
+
+let codigoTemporal="";
+let juegoActual=null;
+
+function mostrarLogin(){
+pantallaInicio.classList.add("oculto");
+pantallaLogin.classList.remove("oculto");
+}
+
+function entrarInvitado(){
+nombrePerfil.innerText="Invitado";
+miniAvatar.src="https://api.dicebear.com/7.x/bottts/svg?seed=darkloader";
+pantallaInicio.classList.add("oculto");
+app.classList.remove("oculto");
+mostrarJuegos();
+}
+
+function abrirRegistro(){
+loginCard.classList.add("oculto");
+recuperarCard.classList.add("oculto");
+registroCard.classList.remove("oculto");
+}
+
+function abrirRecuperacion(){
+loginCard.classList.add("oculto");
+registroCard.classList.add("oculto");
+recuperarCard.classList.remove("oculto");
+}
+
+function volverLogin(){
+recuperarCard.classList.add("oculto");
+registroCard.classList.add("oculto");
+loginCard.classList.remove("oculto");
+}
+
+function togglePassword(id){
+const input=document.getElementById(id);
+input.type=input.type==="password"?"text":"password";
+}
+
+function medirSeguridad(){
+const clave=registroClave.value;
+let puntos=0;
+if(clave.length>=6)puntos++;
+if(clave.length>=10)puntos++;
+if(/[A-Z]/.test(clave))puntos++;
+if(/[0-9]/.test(clave))puntos++;
+if(/[^A-Za-z0-9]/.test(clave))puntos++;
+
+if(puntos<=1){
+barraSeguridad.style.width="25%";
+barraSeguridad.style.background="red";
+textoSeguridad.innerText="Seguridad: baja";
+}else if(puntos<=3){
+barraSeguridad.style.width="60%";
+barraSeguridad.style.background="orange";
+textoSeguridad.innerText="Seguridad: media";
+}else{
+barraSeguridad.style.width="100%";
+barraSeguridad.style.background="limegreen";
+textoSeguridad.innerText="Seguridad: alta";
+}
+}
+
+function crearCuenta(){
+const usuario=registroUsuario.value.trim();
+const correo=registroCorreo.value.trim();
+const clave=registroClave.value;
+const confirmar=confirmarClave.value;
+
+if(usuario===""||correo===""||clave===""||confirmar===""){
+mensajeRegistro.style.color="#ff5555";
+mensajeRegistro.innerText="Completa todos los campos.";
+return;
+}
+if(!correo.includes("@")){
+mensajeRegistro.style.color="#ff5555";
+mensajeRegistro.innerText="Correo no válido.";
+return;
+}
+if(clave!==confirmar){
+mensajeRegistro.style.color="#ff5555";
+mensajeRegistro.innerText="Las contraseñas no coinciden.";
+return;
+}
+localStorage.setItem("darkUser",usuario);
+localStorage.setItem("darkEmail",correo);
+localStorage.setItem("darkPass",clave);
+localStorage.setItem("darkAvatar","https://api.dicebear.com/7.x/bottts/svg?seed="+usuario);
+
+mensajeRegistro.style.color="limegreen";
+mensajeRegistro.innerText="Cuenta creada correctamente.";
+setTimeout(volverLogin,900);
+}
+
+function iniciarSesion(){
+if(loginUsuario.value===localStorage.getItem("darkUser")&&loginClave.value===localStorage.getItem("darkPass")){
+if(mantenerSesion.checked)localStorage.setItem("sesionActiva","true");
+cargarPerfil();
+pantallaLogin.classList.add("oculto");
+app.classList.remove("oculto");
+mostrarJuegos();
+}else{
+alert("Usuario o contraseña incorrectos.");
+}
+}
+
+function cargarPerfil(){
+nombrePerfil.innerText=localStorage.getItem("darkUser")||"Invitado";
+miniAvatar.src=localStorage.getItem("darkAvatar")||"https://api.dicebear.com/7.x/bottts/svg?seed=darkloader";
+}
+
+function generarCodigo(){
+return Math.floor(100000+Math.random()*900000).toString();
+}
+
+function enviarCodigoCorreo(){
+const correo=correoRecuperacion.value.trim();
+const correoGuardado=localStorage.getItem("darkEmail");
+
+if(correo===""){
+mensajeRecuperacion.style.color="#ff5555";
+mensajeRecuperacion.innerText="Escribe tu correo electrónico.";
+return;
+}
+if(correo!==correoGuardado){
+mensajeRecuperacion.style.color="#ff5555";
+mensajeRecuperacion.innerText="Ese correo no está registrado.";
+return;
+}
+codigoTemporal=generarCodigo();
+mensajeRecuperacion.style.color="limegreen";
+mensajeRecuperacion.innerText="Código generado. En versión real se enviaría al correo.";
+alert("SIMULACIÓN: tu código de recuperación es "+codigoTemporal);
+}
+
+function enviarCodigoTelefono(){
+const prefijo=paisTelefono.value;
+const telefono=telefonoRecuperacion.value.trim();
+
+if(telefono.length<6){
+mensajeRecuperacion.style.color="#ff5555";
+mensajeRecuperacion.innerText="Número de teléfono no válido.";
+return;
+}
+codigoTemporal=generarCodigo();
+mensajeRecuperacion.style.color="limegreen";
+mensajeRecuperacion.innerText="Código generado. En versión real se enviaría por SMS.";
+alert("SIMULACIÓN: código para "+prefijo+telefono+" = "+codigoTemporal);
+}
+
+function verificarCodigo(){
+if(codigoRecuperacion.value===codigoTemporal&&codigoTemporal!==""){
+mensajeRecuperacion.style.color="limegreen";
+mensajeRecuperacion.innerText="Cuenta verificada. Ya puedes iniciar sesión.";
+}else{
+mensajeRecuperacion.style.color="#ff5555";
+mensajeRecuperacion.innerText="Código incorrecto.";
+}
+}
+
+function cerrarSesion(){
+localStorage.removeItem("sesionActiva");
+location.reload();
+}
+
+function mostrarJuegos(lista=juegos){
+const texto=buscador.value.toLowerCase();
+catalogo.innerHTML="";
+
+lista.filter(j=>
+j.nombre.toLowerCase().includes(texto)||
+j.genero.toLowerCase().includes(texto)||
+j.año.toLowerCase().includes(texto)||
+j.requisitos.toLowerCase().includes(texto)
+).forEach(j=>{
+const index=juegos.indexOf(j);
+catalogo.innerHTML+=`
+<div class="juego" onclick="abrirJuego(${index})">
+<img src="${j.imagen}" alt="${j.nombre}">
+<div class="juego-info">
+<h3>${j.nombre}</h3>
+<div class="meta">
+📅 Año: ${j.año}<br>
+🎭 Género: ${j.genero}<br>
+💾 Peso: ${j.peso}
+</div>
+<span class="badge">Ver ficha</span>
+</div>
+</div>`;
+});
+}
+
+function filtrarPor(campo,valor){
+buscador.value=valor;
+mostrarJuegos();
+}
+
+function filtrarPeso(tipo){
+let filtrados=juegos.filter(j=>{
+const peso=j.peso.toLowerCase();
+if(tipo==="ligero")return peso.includes("mb");
+if(tipo==="medio")return peso.includes("2 gb")||peso.includes("4 gb");
+if(tipo==="pesado")return peso.includes("70 gb")||peso.includes("80 gb")||peso.includes("100 gb");
+});
+buscador.value="";
+mostrarJuegos(filtrados);
+}
+
+function limpiarFiltro(){
+buscador.value="";
+mostrarJuegos();
+}
+
+function abrirJuego(index){
+const j=juegos[index];
+juegoActual=j.nombre;
+
+app.classList.add("oculto");
+detalleJuego.classList.remove("oculto");
+
+detalleTitulo.innerText=j.nombre;
+detalleDescripcion.innerText=j.descripcion;
+detalleDatos.innerHTML=`<b>Año:</b> ${j.año}<br><b>Género:</b> ${j.genero}<br><b>Peso:</b> ${j.peso}`;
+detalleRequisitos.innerText=j.requisitos;
+detalleCapturas.innerHTML=j.capturas.map(c=>`<img src="${c}" alt="Captura de ${j.nombre}">`).join("");
+detalleDescarga.href=j.enlace;
+actualizarBotonFavorito();
+}
+
+function volverCatalogo(){
+detalleJuego.classList.add("oculto");
+app.classList.remove("oculto");
+}
+
+function obtenerFavoritos(){
+return JSON.parse(localStorage.getItem("favoritosDark")||"[]");
+}
+
+function guardarFavoritos(favs){
+localStorage.setItem("favoritosDark",JSON.stringify(favs));
+}
+
+function toggleFavorito(){
+let favs=obtenerFavoritos();
+if(favs.includes(juegoActual)){
+favs=favs.filter(f=>f!==juegoActual);
+}else{
+favs.push(juegoActual);
+}
+guardarFavoritos(favs);
+actualizarBotonFavorito();
+}
+
+function actualizarBotonFavorito(){
+const favs=obtenerFavoritos();
+favoritoBtn.innerText=favs.includes(juegoActual)?"⭐ Quitar de favoritos":"⭐ Agregar a favoritos";
+}
+
+function mostrarFavoritos(){
+const favs=obtenerFavoritos();
+const lista=juegos.filter(j=>favs.includes(j.nombre));
+buscador.value="";
+mostrarJuegos(lista);
+}
+
+function toggleMusica(){
+const audio=document.getElementById("musicaFondo");
+audio.volume=.25;
+if(audio.paused){
+audio.play().catch(()=>alert("El navegador bloqueó la música. Toca otra vez."));
+}else{
+audio.pause();
+}
+}
+
+const canvas=document.getElementById("fondoAnimado");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+const caracteres="01 DARKLOADER GAME OVER XP LEVEL 2026 ";
+const fontSize=16;
+let columnas=canvas.width/fontSize;
+let drops=Array(Math.floor(columnas)).fill(1);
+
+function dibujarFondo(){
+ctx.fillStyle="rgba(0,0,0,.08)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="#ff1111";
+ctx.font=fontSize+"px monospace";
+
+drops.forEach((y,i)=>{
+const texto=caracteres[Math.floor(Math.random()*caracteres.length)];
+ctx.fillText(texto,i*fontSize,y*fontSize);
+if(y*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;
+drops[i]++;
+});
+}
+
+setInterval(dibujarFondo,40);
+
+window.addEventListener("resize",()=>{
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+columnas=canvas.width/fontSize;
+drops=Array(Math.floor(columnas)).fill(1);
+});
+
+window.addEventListener("load",()=>{
+if(localStorage.getItem("sesionActiva")==="true"){
+cargarPerfil();
+pantallaInicio.classList.add("oculto");
+pantallaLogin.classList.add("oculto");
+app.classList.remove("oculto");
+mostrarJuegos();
+}
+});
+</script>
+
+</body>
+</html>
