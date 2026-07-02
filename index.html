@@ -1,521 +1,113 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DarkLoader</title>
-
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#050505;
-  color:white;
-  overflow-x:hidden;
-}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(255,0,0,.25), transparent 30%),
-    radial-gradient(circle at 80% 40%, rgba(255,80,0,.18), transparent 30%),
-    linear-gradient(120deg,#050505,#120000,#050505);
-  animation:fondo 8s infinite alternate;
-  z-index:-2;
-}
-@keyframes fondo{
-  from{filter:hue-rotate(0deg)}
-  to{filter:hue-rotate(25deg)}
-}
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  opacity:.25;
-}
-button{
-  background:#e50914;
-  color:white;
-  border:none;
-  padding:12px 18px;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:bold;
-}
-button:hover{background:#ff1b26; transform:scale(1.04)}
-#inicio{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
-.logoGrande{
-  font-size:58px;
-  color:#ff1111;
-  text-shadow:0 0 15px red,0 0 40px darkred;
-}
-#loginBox{
-  display:none;
-  background:rgba(10,10,10,.9);
-  border:1px solid #ff1111;
-  padding:25px;
-  border-radius:12px;
-  width:320px;
-}
-input{
-  width:100%;
-  margin:8px 0;
-  padding:12px;
-  background:#111;
-  color:white;
-  border:1px solid #333;
-  border-radius:6px;
-}
-#app,#detalle{display:none}
-.navbar{
-  height:70px;
-  background:#080808;
-  border-bottom:2px solid red;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 25px;
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-.logo{
-  color:red;
-  font-size:25px;
-  font-weight:bold;
-}
-.menu a{
-  color:#ccc;
-  margin:0 12px;
-  text-decoration:none;
-}
-.menu a:hover{color:red}
-.container{
-  display:flex;
-}
-.sidebar{
-  width:230px;
-  min-height:calc(100vh - 70px);
-  background:rgba(10,10,10,.9);
-  border-right:1px solid #222;
-  padding:20px;
-}
-.sidebar h3{
-  color:red;
-  font-size:14px;
-}
-.item{
-  padding:10px;
-  margin:8px 0;
-  background:#111;
-  border-radius:6px;
-  cursor:pointer;
-  position:relative;
-}
-.item:hover{background:#1b1b1b;color:red}
-.item .tooltip{
-  display:none;
-  position:absolute;
-  left:210px;
-  top:0;
-  background:#111;
-  border:1px solid red;
-  padding:12px;
-  width:260px;
-  border-radius:8px;
-  z-index:20;
-  color:white;
-}
-.item:hover .tooltip{display:block}
-.content{
-  flex:1;
-  padding:25px;
-}
-.hero{
-  height:260px;
-  border:1px solid #333;
-  border-radius:14px;
-  background:linear-gradient(90deg,#300,#080808);
-  display:flex;
-  align-items:center;
-  padding:35px;
-  margin-bottom:25px;
-  box-shadow:0 0 25px rgba(255,0,0,.25);
-}
-.hero h1{
-  font-size:42px;
-  color:red;
-}
-.search{
-  width:100%;
-  max-width:450px;
-  margin-bottom:20px;
-}
-.games{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
-  gap:20px;
-}
-.game{
-  background:#101010;
-  border:1px solid #222;
-  border-radius:12px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.25s;
-}
-.game:hover{
-  transform:translateY(-8px) scale(1.02);
-  border-color:red;
-  box-shadow:0 0 20px rgba(255,0,0,.4);
-}
-.game img{
-  width:100%;
-  height:120px;
-  object-fit:cover;
-}
-.gameInfo{
-  padding:15px;
-}
-.meta{
-  font-size:13px;
-  color:#bbb;
-  line-height:1.5;
-}
-.detalleHeader{
-  padding:20px;
-  background:#080808;
-  border-bottom:2px solid red;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.detalleContent{
-  padding:25px;
-  max-width:1100px;
-  margin:auto;
-}
-.capturas{
-  display:flex;
-  gap:15px;
-  overflow-x:auto;
-  margin-bottom:25px;
-}
-.capturas img{
-  width:330px;
-  height:185px;
-  object-fit:cover;
-  border-radius:10px;
-  border:1px solid #333;
-}
-.panel{
-  background:rgba(15,15,15,.92);
-  border:1px solid #333;
-  padding:25px;
-  border-radius:12px;
-}
-.mediafire{
-  display:inline-block;
-  margin-top:20px;
-  background:#1f9fff;
-  padding:15px 25px;
-  border-radius:8px;
-  color:white;
-  text-decoration:none;
-  font-weight:bold;
-}
-.mediafire:hover{background:#42b7ff}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DarkLoader</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<canvas id="matrix"></canvas>
+<canvas id="fondoAnimado"></canvas>
 
-<section id="inicio">
-  <div>
-    <div class="logoGrande">🔥 DARKLOADER 🔥</div>
-    <p>Tu biblioteca gamer oscura</p>
+<section id="pantallaInicio" class="pantalla-inicio">
+  <div class="inicio-contenido">
+    <h1>🔥 DARKLOADER 🔥</h1>
+    <p>Tu catálogo gamer oscuro</p>
     <button onclick="mostrarLogin()">CONTINUAR</button>
   </div>
 </section>
 
-<section id="loginBox">
-  <h2>Iniciar sesión</h2>
-  <input id="usuario" placeholder="Usuario">
-  <input id="clave" type="password" placeholder="Contraseña">
-  <button onclick="registrar()">Crear cuenta</button>
-  <button onclick="entrar()">Entrar</button>
+<section id="pantallaLogin" class="pantalla-login oculto">
+  <div class="login-card">
+    <h2>Iniciar sesión</h2>
+    <input id="usuario" placeholder="Usuario">
+    <input id="clave" type="password" placeholder="Contraseña">
+    <button onclick="iniciarSesion()">Entrar</button>
+    <button onclick="registrarUsuario()">Crear cuenta</button>
+    <p>Cuenta guardada solo en este navegador.</p>
+  </div>
 </section>
 
-<section id="app">
-  <div class="navbar">
+<section id="app" class="oculto">
+
+  <header class="navbar">
     <div class="logo">🔥 DARKLOADER</div>
-    <div class="menu">
+    <nav>
       <a href="#">Tienda</a>
       <a href="#">Biblioteca</a>
       <a href="#">Comunidad</a>
-      <button onclick="salir()">Salir</button>
-    </div>
-  </div>
+    </nav>
+    <button onclick="cerrarSesion()">Salir</button>
+  </header>
 
-  <div class="container">
+  <div class="layout">
+
     <aside class="sidebar">
       <h3>FILTROS</h3>
 
-      <div class="item">Año
+      <div class="filtro">Año
         <div class="tooltip">1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026</div>
       </div>
 
-      <div class="item">Género
-        <div class="tooltip">Acción, Indie, Terror, RPG, Aventura, Plataformas, Deducción social, Shooter, Arcade</div>
+      <div class="filtro">Género
+        <div class="tooltip">Acción, Aventura, Indie, RPG, Arcade, Plataformas, Deducción social, Multijugador</div>
       </div>
 
-      <div class="item">Requisitos
-        <div class="tooltip">Bajos, medios, altos, 4GB RAM, 8GB RAM, 16GB RAM, GTX 750, GTX 1050 Ti, GTX 1060, RTX</div>
+      <div class="filtro">Requisitos
+        <div class="tooltip">Bajos, medios, altos, 4GB RAM, 8GB RAM, 16GB RAM, GTX 960, GTX 1060, RTX</div>
       </div>
 
-      <div class="item">Peso
+      <div class="filtro">Peso
         <div class="tooltip">Menos de 1GB, 1GB - 5GB, 5GB - 20GB, 20GB - 80GB, más de 80GB</div>
       </div>
     </aside>
 
-    <main class="content">
-      <div class="hero">
-        <div>
-          <h1>Catálogo DarkLoader</h1>
-          <p>Explora juegos, capturas, requisitos y detalles antes de descargar.</p>
-        </div>
-      </div>
+    <main class="contenido">
+      <section class="hero">
+        <h1>Catálogo DarkLoader</h1>
+        <p>Explora juegos, capturas, requisitos y detalles.</p>
+      </section>
 
-      <input class="search" id="buscar" placeholder="Buscar juego..." oninput="mostrarJuegos()">
+      <input id="buscador" class="buscador" placeholder="Buscar juego..." oninput="mostrarJuegos()">
 
-      <div class="games" id="games"></div>
+      <section id="catalogo" class="catalogo"></section>
     </main>
+
   </div>
 </section>
 
-<section id="detalle">
-  <div class="detalleHeader">
+<section id="detalleJuego" class="detalle oculto">
+  <header class="detalle-header">
     <h2 id="detalleTitulo"></h2>
-    <button onclick="volver()">⬅ Volver</button>
-  </div>
+    <button onclick="volverCatalogo()">⬅ Volver</button>
+  </header>
 
-  <div class="detalleContent">
-    <div class="capturas" id="detalleCapturas"></div>
+  <main class="detalle-contenido">
+    <div id="detalleCapturas" class="capturas"></div>
 
-    <div class="panel">
+    <div class="detalle-info">
       <h2>Descripción</h2>
       <p id="detalleDescripcion"></p>
 
       <h2>Información</h2>
-      <p id="detalleInfo"></p>
+      <p id="detalleDatos"></p>
 
       <h2>Requisitos</h2>
-      <p id="detalleReq"></p>
+      <p id="detalleRequisitos"></p>
 
-      <a id="mediafire" class="mediafire" href="#" target="_blank">⬇ Descargar vía MediaFire</a>
+      <a id="detalleDescarga" class="boton-mediafire" href="#" target="_blank">
+        Descargar vía MediaFire
+      </a>
     </div>
-  </div>
+  </main>
 </section>
 
-<script>
-const juegos = [
-{
-  nombre:"Among Us",
-  imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg",
-  año:"2018",
-  genero:"Deducción social, Multijugador",
-  peso:"250 MB",
-  descripcion:"Among Us es un juego multijugador de deducción social donde la tripulación debe completar tareas mientras descubre a los impostores ocultos.",
-  requisitos:"Windows 10 • 1 GB RAM • DirectX 10 • 250 MB",
-  capturas:[
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/945360/ss_8e1e9c5c4f8d9c8b6e0f6c7c5fcb99ebcde227a1.600x338.jpg",
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/945360/ss_4c8f08769412670c489f8266f320ad7235b1ee87.600x338.jpg"
-  ],
-  mediafire:"LINK_MEDIAFIRE_AQUI"
-},
-{
-  nombre:"Mecha Chameleon",
-  imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg",
-  año:"2024",
-  genero:"Camuflaje, Party Game, Multijugador",
-  peso:"2 GB",
-  descripcion:"Juego multijugador donde pequeños personajes deben camuflarse pintándose del entorno para evitar ser descubiertos por un cazador.",
-  requisitos:"Intel Core i5 • 8 GB RAM • GTX 1050 Ti o RX 570",
-  capturas:[
-    "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
-    "https://images.unsplash.com/photo-1511512578047-dfb367046420"
-  ],
-  mediafire:"LINK_MEDIAFIRE_AQUI"
-},
-{
-  nombre:"God of War 2018",
-  imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg",
-  año:"2022 PC",
-  genero:"Acción, Aventura",
-  peso:"70 GB",
-  descripcion:"God of War sigue a Kratos y Atreus en un peligroso viaje por los reinos nórdicos, enfrentando criaturas legendarias y dioses.",
-  requisitos:"Windows 10 64-bit • 8 GB RAM • GTX 960 mínimo • GTX 1060 recomendado",
-  capturas:[
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1593500/ss_f1bff24d3967a21d303d95e11ed892e3d9113057.600x338.jpg",
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1593500/ss_6eccc970b6f4d4c8f747b5dd4c0b8b5349c9a99d.600x338.jpg"
-  ],
-  mediafire:"LINK_MEDIAFIRE_AQUI"
-},
-{
-  nombre:"Undertale",
-  imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg",
-  año:"2015",
-  genero:"RPG, Indie",
-  peso:"200 MB",
-  descripcion:"Undertale es un RPG donde puedes luchar o perdonar a tus enemigos. Tus decisiones cambian la historia y el destino de sus personajes.",
-  requisitos:"Windows XP o superior • 3 GB RAM • 200 MB",
-  capturas:[
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/391540/ss_6ded97a2c98473ac1e8a2b3b7d143a2d3912ccf2.600x338.jpg",
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/391540/ss_b9018b4d7cd0c14a1786b1e4d6e9ef9b72d2b0a4.600x338.jpg"
-  ],
-  mediafire:"LINK_MEDIAFIRE_AQUI"
-},
-{
-  nombre:"Cuphead",
-  imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg",
-  año:"2017",
-  genero:"Acción, Plataformas, Run & Gun",
-  peso:"4 GB",
-  descripcion:"Cuphead es un desafiante juego inspirado en caricaturas de los años 30, con jefes gigantes, animación clásica y mucha dificultad.",
-  requisitos:"Windows 7 • 3 GB RAM • GeForce 9600 GT • 4 GB",
-  capturas:[
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/268910/ss_5389476f8a7a56f1d06bd8e3006c61c0b3a8d3ab.600x338.jpg",
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/268910/ss_48f4f916d9b66e04df04b3fa4de1b1f6764ef99a.600x338.jpg"
-  ],
-  mediafire:"LINK_MEDIAFIRE_AQUI"
-},
-{
-  nombre:"Hotline Miami",
-  imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg",
-  año:"2012",
-  genero:"Acción, Arcade, Indie",
-  peso:"250 MB",
-  descripcion:"Hotline Miami es un violento juego de acción con vista superior, estética retro, música electrónica intensa y combates rápidos.",
-  requisitos:"Windows XP/Vista/7 • 512 MB RAM • OpenGL 2.1 • 250 MB",
-  capturas:[
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/219150/ss_840d116d5c99f1de755c38b4c8af8b442a2ff319.600x338.jpg",
-    "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/219150/ss_4b078cc3e3c9b76f3c40eb8fca5a8e7f6fd033fd.600x338.jpg"
-  ],
-  mediafire:"LINK_MEDIAFIRE_AQUI"
-}
-];
-
-function mostrarLogin(){
-  document.getElementById("inicio").style.display="none";
-  document.getElementById("loginBox").style.display="block";
-  document.getElementById("loginBox").style.margin="120px auto";
-}
-
-function registrar(){
-  localStorage.setItem("darkUser", usuario.value);
-  localStorage.setItem("darkPass", clave.value);
-  alert("Cuenta creada.");
-}
-
-function entrar(){
-  if(usuario.value===localStorage.getItem("darkUser") && clave.value===localStorage.getItem("darkPass")){
-    document.getElementById("loginBox").style.display="none";
-    document.getElementById("app").style.display="block";
-    mostrarJuegos();
-  }else{
-    alert("Usuario o contraseña incorrectos.");
-  }
-}
-
-function salir(){
-  location.reload();
-}
-
-function mostrarJuegos(){
-  const texto = document.getElementById("buscar")?.value.toLowerCase() || "";
-  const cont = document.getElementById("games");
-  cont.innerHTML = "";
-
-  juegos
-  .filter(j => j.nombre.toLowerCase().includes(texto) || j.genero.toLowerCase().includes(texto))
-  .forEach((j,i)=>{
-    cont.innerHTML += `
-      <div class="game" onclick="abrirJuego(${i})">
-        <img src="${j.imagen}">
-        <div class="gameInfo">
-          <h3>${j.nombre}</h3>
-          <div class="meta">
-            📅 Año: ${j.año}<br>
-            🎭 Género: ${j.genero}<br>
-            💾 Peso: ${j.peso}
-          </div>
-        </div>
-      </div>
-    `;
-  });
-}
-
-function abrirJuego(i){
-  const j = juegos[i];
-
-  document.getElementById("app").style.display="none";
-  document.getElementById("detalle").style.display="block";
-
-  document.getElementById("detalleTitulo").innerText = j.nombre;
-  document.getElementById("detalleDescripcion").innerText = j.descripcion;
-
-  document.getElementById("detalleInfo").innerHTML = `
-    <b>Año:</b> ${j.año}<br>
-    <b>Género:</b> ${j.genero}<br>
-    <b>Peso:</b> ${j.peso}
-  `;
-
-  document.getElementById("detalleReq").innerText = j.requisitos;
-
-  document.getElementById("detalleCapturas").innerHTML =
-    j.capturas.map(c => `<img src="${c}">`).join("");
-
-  document.getElementById("mediafire").href = j.mediafire;
-}
-
-function volver(){
-  document.getElementById("detalle").style.display="none";
-  document.getElementById("app").style.display="block";
-}
-
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
-const chars = "01 DARKLOADER GAME OVER XP 2026 ";
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
-
-function lluvia(){
-  ctx.fillStyle="rgba(0,0,0,.08)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="#ff1111";
-  ctx.font=fontSize+"px monospace";
-  drops.forEach((y,i)=>{
-    const text=chars[Math.floor(Math.random()*chars.length)];
-    ctx.fillText(text,i*fontSize,y*fontSize);
-    if(y*fontSize>canvas.height && Math.random()>0.975)drops[i]=0;
-    drops[i]++;
-  });
-}
-setInterval(lluvia,40);
-</script>
+<script src="js/juegos.js"></script>
+<script src="js/login.js"></script>
+<script src="js/app.js"></script>
+<script src="js/efectos.js"></script>
 
 </body>
 </html>
