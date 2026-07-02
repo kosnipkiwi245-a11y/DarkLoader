@@ -3,101 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DarkLoader</title>
+<title>DarkLoader Online</title>
+
 <style>
 *{box-sizing:border-box}
-:root{--red:#ff1b1b;--panel:rgba(12,12,12,.92);--blue:#1f9fff}
+:root{--red:#ff1b1b;--panel:rgba(12,12,12,.93);--blue:#1f9fff;--green:#00ff88;--orange:#ff9f1c}
 body{margin:0;background:#050505;color:white;font-family:Arial,sans-serif;overflow-x:hidden}
 body::after{content:"";position:fixed;inset:0;z-index:-4;background-size:cover;background-position:center;opacity:.25;animation:fondoJuegos 35s infinite ease-in-out}
-@keyframes fondoJuegos{
-0%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg")}
-33%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg")}
-66%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg")}
-100%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg")}
-}
-body::before{content:"";position:fixed;inset:0;background:linear-gradient(120deg,rgba(0,0,0,.96),rgba(80,0,0,.65),rgba(0,0,0,.98));z-index:-3}
+@keyframes fondoJuegos{0%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg")}33%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg")}66%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg")}100%{background-image:url("https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg")}}
+body::before{content:"";position:fixed;inset:0;background:linear-gradient(120deg,rgba(0,0,0,.97),rgba(80,0,0,.65),rgba(0,0,0,.98));z-index:-3}
 canvas{position:fixed;inset:0;z-index:-2;opacity:.22}
 .oculto{display:none!important}
 button,.boton{background:linear-gradient(135deg,var(--red),#8b0000);color:white;border:none;padding:12px 18px;border-radius:8px;cursor:pointer;font-weight:bold;text-decoration:none;transition:.2s;display:inline-block}
 button:hover,.boton:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 0 18px rgba(255,0,0,.55)}
 .secundario{background:#171717;border:1px solid #333}
+.azul{background:linear-gradient(135deg,#1f9fff,#0069c9)}
+.verde{background:linear-gradient(135deg,#00b86b,#006b3e)}
 input,select,textarea{width:100%;padding:12px;margin:8px 0;background:#101010;color:white;border:1px solid #333;border-radius:8px;outline:none}
 textarea{min-height:90px;resize:vertical}
 input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 12px rgba(255,0,0,.35)}
 .pantalla-inicio,.pantalla-login{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:25px;text-align:center}
-.inicio-card,.login-card{width:min(760px,95%);background:rgba(0,0,0,.78);border:1px solid rgba(255,0,0,.55);border-radius:24px;padding:42px;box-shadow:0 0 45px rgba(255,0,0,.38);backdrop-filter:blur(8px)}
-.login-card{width:430px}
-.logo-main{display:flex;justify-content:center;align-items:center;gap:16px}
+.inicio-card,.login-card{width:min(780px,95%);background:rgba(0,0,0,.78);border:1px solid rgba(255,0,0,.55);border-radius:24px;padding:42px;box-shadow:0 0 45px rgba(255,0,0,.38);backdrop-filter:blur(8px)}
+.login-card{width:460px}
+.logo-main{display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap}
 .logo-icon{width:76px;height:76px;border-radius:20px;background:#170000;border:2px solid var(--red);display:grid;place-items:center;font-size:38px;box-shadow:0 0 25px red}
 .logo-main h1{font-size:62px;color:var(--red);text-shadow:0 0 18px red,0 0 55px #700;margin:0}
 .slogan{color:#ddd;font-size:18px}
-.password-box{display:flex;gap:8px}
-.password-box input{flex:1}
-.check{display:flex;gap:8px;align-items:center;justify-content:center;color:#ccc;font-size:14px}
-.check input{width:auto}
-.barra{height:10px;background:#222;border-radius:999px;overflow:hidden;margin:10px 0}
-#barraSeguridad{height:100%;width:0%;background:red;transition:.25s}
-.mensaje{min-height:22px;color:#ff5555;font-weight:bold}
-hr{border:0;border-top:1px solid #252525;margin:18px 0}
-.navbar{height:76px;background:rgba(5,5,5,.96);border-bottom:2px solid var(--red);display:flex;align-items:center;justify-content:space-between;padding:0 26px;position:sticky;top:0;z-index:20;backdrop-filter:blur(10px)}
+.password-box{display:flex;gap:8px}.password-box input{flex:1}
+.check{display:flex;gap:8px;align-items:center;justify-content:center;color:#ccc;font-size:14px}.check input{width:auto}
+.barra{height:10px;background:#222;border-radius:999px;overflow:hidden;margin:10px 0}#barraSeguridad{height:100%;width:0%;background:red;transition:.25s}
+.mensaje{min-height:22px;color:#ff5555;font-weight:bold}hr{border:0;border-top:1px solid #252525;margin:18px 0}
+.navbar{min-height:76px;background:rgba(5,5,5,.96);border-bottom:2px solid var(--red);display:flex;align-items:center;justify-content:space-between;padding:12px 26px;position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:12px;color:var(--red);font-size:24px;font-weight:bold}
 .brand-mark{width:42px;height:42px;border-radius:12px;background:#150000;border:1px solid var(--red);display:grid;place-items:center}
-.navbar a{color:#ccc;text-decoration:none;margin:0 10px;font-weight:bold}
-.navbar a:hover{color:var(--red)}
+.navbar a{color:#ccc;text-decoration:none;margin:0 10px;font-weight:bold}.navbar a:hover{color:var(--red)}
 .nav-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .avatar{width:42px;height:42px;border-radius:50%;background:#222;border:2px solid var(--red);object-fit:cover;cursor:pointer}
 #nombrePerfil{color:#ddd;font-weight:bold}
-.layout{display:flex}
-.sidebar{width:260px;min-height:calc(100vh - 76px);background:rgba(10,10,10,.92);border-right:1px solid #252525;padding:20px}
-.sidebar h3{color:var(--red)}
-.filtro{padding:12px;margin:10px 0;background:#111;border:1px solid #222;border-radius:10px;position:relative;cursor:pointer}
-.filtro:hover{color:var(--red);border-color:var(--red)}
-.tooltip{display:none;position:absolute;left:225px;top:0;width:320px;background:#0d0d0d;border:1px solid var(--red);border-radius:12px;padding:12px;z-index:50}
-.filtro:hover .tooltip{display:flex;flex-wrap:wrap;gap:8px}
-.tooltip button{font-size:12px;padding:8px 10px}
+.status-dot{width:11px;height:11px;border-radius:50%;display:inline-block;margin-right:6px;background:var(--green);box-shadow:0 0 9px var(--green)}
+.layout{display:flex}.sidebar{width:270px;min-height:calc(100vh - 76px);background:rgba(10,10,10,.92);border-right:1px solid #252525;padding:20px}.sidebar h3{color:var(--red)}
+.filtro{padding:12px;margin:10px 0;background:#111;border:1px solid #222;border-radius:10px;position:relative;cursor:pointer}.filtro:hover{color:var(--red);border-color:var(--red)}
+.tooltip{display:none;position:absolute;left:235px;top:0;width:320px;background:#0d0d0d;border:1px solid var(--red);border-radius:12px;padding:12px;z-index:50}.filtro:hover .tooltip{display:flex;flex-wrap:wrap;gap:8px}.tooltip button{font-size:12px;padding:8px 10px}
 .contenido{flex:1;padding:28px}
-.hero{min-height:280px;background:linear-gradient(90deg,rgba(120,0,0,.85),rgba(0,0,0,.82)),url("https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg") center/cover;border:1px solid #333;border-radius:22px;padding:42px;margin-bottom:25px;display:flex;align-items:center;box-shadow:0 0 30px rgba(255,0,0,.25)}
-.hero h1{font-size:46px;color:var(--red);margin:0 0 10px}
-.search-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:25px}
-.buscador{max-width:520px}
+.hero{min-height:280px;background:linear-gradient(90deg,rgba(120,0,0,.85),rgba(0,0,0,.82)),url("https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg") center/cover;border:1px solid #333;border-radius:22px;padding:42px;margin-bottom:25px;display:flex;align-items:center;box-shadow:0 0 30px rgba(255,0,0,.25)}.hero h1{font-size:46px;color:var(--red);margin:0 0 10px}
+.search-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:25px}.buscador{max-width:520px}
 .catalogo{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:22px}
-.juego{background:#101010;border:1px solid #222;border-radius:16px;overflow:hidden;cursor:pointer;transition:.25s}
-.juego:hover{transform:translateY(-8px) scale(1.02);border-color:var(--red);box-shadow:0 0 25px rgba(255,0,0,.45)}
-.juego img{width:100%;height:125px;object-fit:cover}
-.juego-info{padding:15px}
-.juego-info h3{margin:0 0 10px}
-.meta{color:#bbb;font-size:13px;line-height:1.55}
-.badge{display:inline-block;background:#260000;color:#ffb0b0;border:1px solid #5a0000;padding:4px 8px;border-radius:999px;font-size:12px;margin-top:8px}
-.detalle-header{background:#080808;border-bottom:2px solid var(--red);padding:20px 26px;display:flex;justify-content:space-between;align-items:center}
-.detalle-contenido{max-width:1150px;margin:auto;padding:28px}
-.capturas{display:flex;gap:16px;overflow-x:auto;margin-bottom:25px;padding-bottom:8px}
-.capturas img{min-width:340px;height:190px;object-fit:cover;border-radius:14px;border:1px solid #333;transition:.2s}
-.capturas img:hover{transform:scale(1.03);border-color:var(--red)}
-.detalle-info,.panel{background:var(--panel);border:1px solid #333;padding:28px;border-radius:18px}
-.boton-mediafire{margin-top:20px;background:linear-gradient(135deg,#1f9fff,#0069c9)}
+.juego{background:#101010;border:1px solid #222;border-radius:16px;overflow:hidden;cursor:pointer;transition:.25s}.juego:hover{transform:translateY(-8px) scale(1.02);border-color:var(--red);box-shadow:0 0 25px rgba(255,0,0,.45)}.juego img{width:100%;height:125px;object-fit:cover}
+.juego-info{padding:15px}.juego-info h3{margin:0 0 10px}.meta{color:#bbb;font-size:13px;line-height:1.55}.badge{display:inline-block;background:#260000;color:#ffb0b0;border:1px solid #5a0000;padding:4px 8px;border-radius:999px;font-size:12px;margin-top:8px}
+.detalle-header{background:#080808;border-bottom:2px solid var(--red);padding:20px 26px;display:flex;justify-content:space-between;align-items:center}.detalle-contenido{max-width:1150px;margin:auto;padding:28px}
+.capturas{display:flex;gap:16px;overflow-x:auto;margin-bottom:25px;padding-bottom:8px}.capturas img{min-width:340px;height:190px;object-fit:cover;border-radius:14px;border:1px solid #333;transition:.2s}.capturas img:hover{transform:scale(1.03);border-color:var(--red)}
+.detalle-info,.panel{background:var(--panel);border:1px solid #333;padding:28px;border-radius:18px}.boton-mediafire{margin-top:20px;background:linear-gradient(135deg,#1f9fff,#0069c9)}
 .footer{padding:28px;text-align:center;color:#888;border-top:1px solid #222;background:rgba(0,0,0,.7)}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
-.perfil-card,.chat-card{width:min(850px,96%);background:#0b0b0b;border:1px solid var(--red);border-radius:22px;box-shadow:0 0 45px rgba(255,0,0,.4);overflow:hidden}
-.perfil-banner{height:150px;background:linear-gradient(90deg,#220000,#111);background-size:cover;background-position:center}
-.perfil-main,.chat-main{padding:25px}
-.perfil-top{display:flex;gap:18px;align-items:center;margin-top:-65px}
-.perfil-avatar-grande{width:125px;height:125px;border-radius:50%;border:4px solid var(--red);object-fit:cover;background:#111;box-shadow:0 0 22px rgba(255,0,0,.5)}
-.dropzone{border:2px dashed #444;border-radius:14px;padding:18px;text-align:center;color:#bbb;background:#111;margin:10px 0;transition:.2s}
-.dropzone.drag{border-color:var(--red);background:#240000;color:white}
-.preview-row,.perfil-actions,.chat-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:15px}
-.color-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
-.color-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid #333}
-.color-dot:hover{transform:scale(1.12);border-color:white}
-.perfil-publico{background:#111;border:1px solid #333;border-radius:14px;padding:15px;margin-top:15px;color:#ddd}
-.friend-grid{display:grid;grid-template-columns:260px 1fr;gap:15px}
-.friend-list{background:#111;border:1px solid #333;border-radius:14px;padding:12px;max-height:360px;overflow:auto}
-.friend{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #222;color:#ddd}
-.friend:last-child{border-bottom:0}
-.chat-box{background:#080808;border:1px solid #333;border-radius:14px;height:360px;overflow:auto;padding:12px}
-.msg{background:#181818;border:1px solid #2a2a2a;border-radius:12px;padding:10px;margin:8px 0;max-width:85%}
-.msg.me{margin-left:auto;border-color:var(--red)}
-.msg img{max-width:220px;border-radius:10px;margin-top:8px;display:block}
-@media(max-width:850px){.layout{flex-direction:column}.sidebar{width:100%;min-height:auto}.tooltip{position:static;width:100%;margin-top:10px}.navbar{height:auto;flex-direction:column;gap:12px;padding:16px}.logo-main h1{font-size:38px}.hero h1{font-size:32px}.perfil-top{flex-direction:column;text-align:center}.friend-grid{grid-template-columns:1fr}}
+.perfil-card,.social-card{width:min(980px,96%);max-height:92vh;overflow:auto;background:#0b0b0b;border:1px solid var(--red);border-radius:22px;box-shadow:0 0 45px rgba(255,0,0,.4)}
+.perfil-banner{height:150px;background:linear-gradient(90deg,#220000,#111);background-size:cover;background-position:center}.perfil-main,.social-main{padding:25px}.perfil-top{display:flex;gap:18px;align-items:center;margin-top:-65px}.perfil-avatar-grande{width:125px;height:125px;border-radius:50%;border:4px solid var(--red);object-fit:cover;background:#111;box-shadow:0 0 22px rgba(255,0,0,.5)}
+.preview-row,.perfil-actions,.chat-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:15px}.color-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}.color-dot{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid #333}.color-dot:hover{transform:scale(1.12);border-color:white}.perfil-publico{background:#111;border:1px solid #333;border-radius:14px;padding:15px;margin-top:15px;color:#ddd}
+.social-grid{display:grid;grid-template-columns:280px 1fr 260px;gap:15px}.friend-list,.activity-list{background:#111;border:1px solid #333;border-radius:14px;padding:12px;max-height:440px;overflow:auto}.friend,.request,.activity{padding:10px;border-bottom:1px solid #222;color:#ddd}.friend:last-child,.activity:last-child{border-bottom:0}.friend-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.friend-name{cursor:pointer}.friend-name:hover{color:var(--red)}.small{font-size:12px;color:#aaa}
+.chat-box{background:#080808;border:1px solid #333;border-radius:14px;height:360px;overflow:auto;padding:12px}.msg{background:#181818;border:1px solid #2a2a2a;border-radius:12px;padding:10px;margin:8px 0;max-width:85%}.msg.me{margin-left:auto;border-color:var(--red)}.msg.friend{margin-right:auto;border-color:#444}.tab-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.notification{position:fixed;right:20px;bottom:20px;background:#111;border:1px solid var(--red);padding:15px;border-radius:12px;box-shadow:0 0 20px rgba(255,0,0,.35);z-index:200}
+@media(max-width:1000px){.social-grid{grid-template-columns:1fr}.layout{flex-direction:column}.sidebar{width:100%;min-height:auto}.tooltip{position:static;width:100%;margin-top:10px}.navbar{height:auto;flex-direction:column;gap:12px;padding:16px}.logo-main h1{font-size:38px}.hero h1{font-size:32px}.perfil-top{flex-direction:column;text-align:center}}
 </style>
 </head>
 <body>
@@ -107,9 +71,8 @@ hr{border:0;border-top:1px solid #252525;margin:18px 0}
 <section id="pantallaInicio" class="pantalla-inicio">
   <div class="inicio-card">
     <div class="logo-main"><div class="logo-icon">🔥</div><h1>DARKLOADER</h1></div>
-    <p class="slogan">Catálogo gamer oscuro, rápido y brutal.</p>
+    <p class="slogan">Catálogo gamer online con Firebase: usuarios reales, amigos, solicitudes y chat en tiempo real.</p>
     <button onclick="mostrarLogin()">CONTINUAR</button>
-    <button class="secundario" onclick="entrarInvitado()">Entrar como invitado</button>
     <button class="secundario" onclick="toggleMusica()">🎵 Música</button>
   </div>
 </section>
@@ -117,13 +80,13 @@ hr{border:0;border-top:1px solid #252525;margin:18px 0}
 <section id="pantallaLogin" class="pantalla-login oculto">
   <div class="login-card" id="loginCard">
     <h2>Iniciar sesión</h2>
-    <input id="loginUsuario" placeholder="Usuario">
+    <input id="loginCorreo" type="email" placeholder="Correo electrónico">
     <input id="loginClave" type="password" placeholder="Contraseña">
     <label class="check"><input id="mantenerSesion" type="checkbox">Mantener sesión iniciada</label>
     <button onclick="iniciarSesion()">Entrar</button>
     <button class="secundario" onclick="abrirRegistro()">Registrarse</button>
-    <button class="secundario" onclick="abrirRecuperacion()">Recuperar cuenta</button>
-    <p>Cuenta guardada solo en este navegador.</p>
+    <button class="secundario" onclick="abrirRecuperacion()">Recuperar contraseña</button>
+    <p>Online real usando Firebase Authentication + Firestore.</p>
   </div>
 
   <div class="login-card oculto" id="registroCard">
@@ -140,17 +103,9 @@ hr{border:0;border-top:1px solid #252525;margin:18px 0}
   </div>
 
   <div class="login-card oculto" id="recuperarCard">
-    <h2>Recuperar cuenta</h2>
-    <input id="correoRecuperacion" type="email" placeholder="Correo electrónico">
-    <button onclick="enviarCodigoCorreo()">Enviar código por correo</button>
-    <hr>
-    <p>O recupera tu cuenta con número de teléfono</p>
-    <select id="paisTelefono"><option value="+506">🇨🇷 Costa Rica +506</option><option value="+52">🇲🇽 México +52</option><option value="+1">🇺🇸 Estados Unidos +1</option><option value="+34">🇪🇸 España +34</option><option value="+57">🇨🇴 Colombia +57</option></select>
-    <input id="telefonoRecuperacion" type="tel" placeholder="Número de teléfono">
-    <button onclick="enviarCodigoTelefono()">Enviar código por SMS</button>
-    <hr>
-    <input id="codigoRecuperacion" placeholder="Código de verificación">
-    <button onclick="verificarCodigo()">Verificar código</button>
+    <h2>Recuperar contraseña</h2>
+    <input id="correoRecuperacion" type="email" placeholder="Correo electrónico registrado">
+    <button onclick="recuperarPassword()">Enviar correo de recuperación</button>
     <button class="secundario" onclick="volverLogin()">Volver</button>
     <p id="mensajeRecuperacion" class="mensaje"></p>
   </div>
@@ -159,11 +114,12 @@ hr{border:0;border-top:1px solid #252525;margin:18px 0}
 <section id="app" class="oculto">
   <header class="navbar">
     <div class="brand"><div class="brand-mark">🔥</div>DARKLOADER</div>
-    <nav><a href="#" onclick="limpiarFiltro()">Tienda</a><a href="#" onclick="mostrarFavoritos()">Favoritos</a><a href="#" onclick="abrirAmigos()">Amigos</a><a href="#">Soporte</a></nav>
+    <nav><a href="#" onclick="limpiarFiltro()">Tienda</a><a href="#" onclick="mostrarFavoritos()">Favoritos</a><a href="#" onclick="abrirSocial()">Amigos y chat</a><a href="#" onclick="abrirSocial('actividad')">Actividad</a></nav>
     <div class="nav-actions">
+      <select id="estadoUsuario" onchange="cambiarEstado()" style="width:135px"><option value="online">🟢 En línea</option><option value="ausente">🟠 Ausente</option><option value="ocupado">🔴 Ocupado</option><option value="invisible">⚫ Invisible</option></select>
       <button class="secundario" onclick="toggleMusica()">🎵</button>
       <img id="miniAvatar" class="avatar" onclick="abrirPerfil()" src="">
-      <span id="nombrePerfil">Invitado</span>
+      <span><span id="estadoDot" class="status-dot"></span><span id="nombrePerfil">Jugador</span></span>
       <button class="secundario" onclick="abrirPerfil()">Perfil</button>
       <button onclick="cerrarSesion()">Salir</button>
     </div>
@@ -176,15 +132,19 @@ hr{border:0;border-top:1px solid #252525;margin:18px 0}
       <div class="filtro">Género<div class="tooltip"><button onclick="filtrarPor('genero','Acción')">Acción</button><button onclick="filtrarPor('genero','RPG')">RPG</button><button onclick="filtrarPor('genero','Indie')">Indie</button><button onclick="limpiarFiltro()">Todos</button></div></div>
       <div class="filtro">Requisitos<div class="tooltip"><button onclick="filtrarPor('requisitos','512 MB')">Bajos</button><button onclick="filtrarPor('requisitos','3 GB')">Medios</button><button onclick="limpiarFiltro()">Todos</button></div></div>
       <div class="filtro">Peso<div class="tooltip"><button onclick="filtrarPeso('ligero')">Ligero</button><button onclick="filtrarPeso('medio')">Medio</button><button onclick="limpiarFiltro()">Todos</button></div></div>
+      <div class="panel" style="padding:15px;margin-top:15px">
+        <h3>Actividad reciente</h3>
+        <div id="miniActividad"></div>
+      </div>
     </aside>
 
     <main class="contenido">
-      <section class="hero"><div><h1>Catálogo DarkLoader</h1><p>Undertale, Hotline Miami y Cuphead con fichas, capturas, favoritos, perfil, amigos y chat local.</p><button onclick="limpiarFiltro()">Explorar catálogo</button></div></section>
+      <section class="hero"><div><h1>Catálogo DarkLoader Online</h1><p>Undertale, Hotline Miami y Cuphead con perfiles, amigos, estado, actividad y chat en tiempo real.</p><button onclick="limpiarFiltro()">Explorar catálogo</button></div></section>
       <div class="search-row"><input id="buscador" class="buscador" placeholder="Buscar juego..." oninput="mostrarJuegos()"><button onclick="limpiarFiltro()">Limpiar</button></div>
       <section id="catalogo" class="catalogo"></section>
     </main>
   </div>
-  <footer class="footer">DarkLoader © 2026 — Catálogo visual gamer.</footer>
+  <footer class="footer">DarkLoader © 2026 — Online con Firebase.</footer>
 </section>
 
 <section id="detalleJuego" class="detalle oculto">
@@ -196,7 +156,7 @@ hr{border:0;border-top:1px solid #252525;margin:18px 0}
       <h2>Información</h2><p id="detalleDatos"></p>
       <h2>Requisitos</h2><p id="detalleRequisitos"></p>
       <button id="favoritoBtn" onclick="toggleFavorito()">⭐ Agregar a favoritos</button>
-      <a id="detalleDescarga" class="boton boton-mediafire" href="#" target="_blank">MediaFire</a>
+      <a id="detalleDescarga" class="boton boton-mediafire" href="#" target="_blank" onclick="registrarDescarga()">MediaFire</a>
     </div>
   </main>
 </section>
@@ -205,114 +165,398 @@ hr{border:0;border-top:1px solid #252525;margin:18px 0}
   <div class="perfil-card">
     <div id="perfilBannerPreview" class="perfil-banner"></div>
     <div class="perfil-main">
-      <div class="perfil-top"><img id="perfilAvatarPreview" class="perfil-avatar-grande" src=""><div><h2>Personalizar perfil</h2><p>Arrastra una imagen o selecciona un archivo para tu avatar y banner.</p></div></div>
+      <div class="perfil-top"><img id="perfilAvatarPreview" class="perfil-avatar-grande" src=""><div><h2>Editar perfil online</h2><p>Sin Storage: usa URL de imagen para avatar/banner.</p></div></div>
       <input id="perfilNombreInput" placeholder="Nickname visible">
+      <input id="perfilAvatarUrl" placeholder="URL de foto de perfil">
+      <input id="perfilBannerUrl" placeholder="URL de banner">
       <textarea id="perfilBioInput" placeholder="Bio / descripción gamer"></textarea>
       <label>Color del perfil</label>
       <div class="color-row"><div class="color-dot" style="background:#ff1b1b" onclick="setColorPerfil('#ff1b1b')"></div><div class="color-dot" style="background:#ff7a00" onclick="setColorPerfil('#ff7a00')"></div><div class="color-dot" style="background:#8a2be2" onclick="setColorPerfil('#8a2be2')"></div><div class="color-dot" style="background:#00a2ff" onclick="setColorPerfil('#00a2ff')"></div><div class="color-dot" style="background:#00ff88" onclick="setColorPerfil('#00ff88')"></div></div>
-      <div class="preview-row"><div style="flex:1"><div id="avatarDrop" class="dropzone">Arrastra tu foto de perfil aquí o haz clic</div><input id="avatarInput" type="file" accept="image/*" class="oculto"></div><div style="flex:1"><div id="bannerDrop" class="dropzone">Arrastra tu banner aquí o haz clic</div><input id="bannerInput" type="file" accept="image/*" class="oculto"></div></div>
       <div class="perfil-publico"><h3>Vista previa</h3><p><b id="previewNombre">Jugador</b></p><p id="previewBio">Sin bio todavía.</p></div>
-      <div class="perfil-actions"><button onclick="guardarPerfil()">Guardar perfil</button><button class="secundario" onclick="cerrarPerfil()">Cerrar</button><button class="secundario" onclick="resetPerfil()">Restablecer</button></div>
+      <div class="perfil-actions"><button onclick="guardarPerfil()">Guardar perfil</button><button class="secundario" onclick="cerrarPerfil()">Cerrar</button></div>
     </div>
   </div>
 </section>
 
-<section id="modalAmigos" class="modal oculto">
-  <div class="chat-card">
-    <div class="chat-main">
-      <h2>Amigos y chat</h2>
-      <div class="friend-grid">
-        <div>
+<section id="modalSocial" class="modal oculto">
+  <div class="social-card">
+    <div class="social-main">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+        <h2>Centro social online</h2>
+        <button class="secundario" onclick="cerrarSocial()">Cerrar</button>
+      </div>
+      <div class="tab-row">
+        <button onclick="mostrarSocialTab('amigos')">👥 Amigos</button>
+        <button onclick="mostrarSocialTab('chat')">💬 Chat</button>
+        <button onclick="mostrarSocialTab('solicitudes')">📨 Solicitudes</button>
+        <button onclick="mostrarSocialTab('actividad')">📡 Actividad</button>
+      </div>
+
+      <div id="tabAmigos" class="social-tab">
+        <div class="social-grid">
+          <div>
+            <div class="panel">
+              <h3>Buscar usuario</h3>
+              <input id="buscarUsuarioInput" placeholder="Nickname exacto">
+              <button onclick="buscarUsuario()">Buscar</button>
+              <div id="resultadoBusqueda"></div>
+            </div>
+            <h3>Mis amigos</h3>
+            <div class="friend-list" id="listaAmigos"></div>
+          </div>
           <div class="panel">
-            <h3>Agregar amigo</h3>
-            <input id="nuevoAmigo" placeholder="Nickname del amigo">
-            <button onclick="agregarAmigo()">Agregar</button>
+            <h3 id="perfilAmigoTitulo">Perfil del amigo</h3>
+            <div id="perfilAmigoVista">Selecciona un amigo para ver su perfil.</div>
           </div>
-          <div class="friend-list" id="listaAmigos"></div>
-        </div>
-        <div>
-          <h3 id="chatTitulo">Selecciona un amigo</h3>
-          <div class="chat-box" id="chatBox"></div>
-          <div class="chat-actions">
-            <input id="mensajeChat" placeholder="Escribe un mensaje...">
-            <button onclick="enviarMensaje()">Enviar</button>
-            <button class="secundario" onclick="chatImagenInput.click()">Imagen</button>
-            <button class="secundario" onclick="limpiarChat()">Limpiar chat</button>
-            <input id="chatImagenInput" type="file" accept="image/*" class="oculto">
-          </div>
+          <div class="activity-list" id="actividadAmigos"></div>
         </div>
       </div>
-      <br>
-      <button class="secundario" onclick="cerrarAmigos()">Cerrar</button>
+
+      <div id="tabChat" class="social-tab oculto">
+        <h3 id="chatTitulo">Selecciona un amigo</h3>
+        <div class="chat-box" id="chatBox"></div>
+        <div class="chat-actions">
+          <input id="mensajeChat" placeholder="Escribe un mensaje...">
+          <button onclick="enviarMensaje()">Enviar</button>
+          <button class="secundario" onclick="limpiarChatVisual()">Limpiar pantalla</button>
+        </div>
+      </div>
+
+      <div id="tabSolicitudes" class="social-tab oculto">
+        <div class="panel">
+          <h3>Solicitudes recibidas</h3>
+          <div id="listaSolicitudes"></div>
+        </div>
+      </div>
+
+      <div id="tabActividad" class="social-tab oculto">
+        <div class="panel">
+          <h3>Actividad global</h3>
+          <div id="actividadGlobal"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
+<div id="notificacion" class="notification oculto"></div>
 <audio id="musicaFondo" loop><source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3" type="audio/mpeg"></audio>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-analytics.js";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  sendPasswordResetEmail, signOut, onAuthStateChanged,
+  browserLocalPersistence, browserSessionPersistence, setPersistence
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import {
+  getFirestore, doc, setDoc, getDoc, addDoc, collection, query, where,
+  getDocs, onSnapshot, orderBy, serverTimestamp, updateDoc, deleteDoc,
+  arrayUnion, arrayRemove, limit
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAUZW9NRdDoGkv58zQ6qRsAmUf4m63MIUY",
+  authDomain: "darkloader-4d5e1.firebaseapp.com",
+  projectId: "darkloader-4d5e1",
+  storageBucket: "darkloader-4d5e1.firebasestorage.app",
+  messagingSenderId: "1090383843671",
+  appId: "1:1090383843671:web:28da9774b01e766f23ee12",
+  measurementId: "G-JVH1YQVY9Q"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+try { getAnalytics(firebaseApp); } catch(e) {}
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+
 const juegos=[
 {nombre:"Undertale",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg",año:"2015",genero:"RPG, Indie",peso:"200 MB",descripcion:"RPG donde puedes luchar o perdonar enemigos. Tus decisiones cambian la historia.",requisitos:"Windows XP o superior • 3 GB RAM • 200 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_6ded97a2c98473ac1e8a2b3b7d143a2d3912ccf2.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_b9018b4d7cd0c14a1786b1e4d6e9ef9b72d2b0a4.600x338.jpg"],enlace:"https://store.steampowered.com/app/391540/Undertale/"},
 {nombre:"Hotline Miami",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg",año:"2012",genero:"Acción, Arcade, Indie",peso:"250 MB",descripcion:"Acción retro violenta con vista superior, música electrónica intensa y combates rápidos.",requisitos:"Windows XP/Vista/7 • 512 MB RAM • OpenGL 2.1 • 250 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_840d116d5c99f1de755c38b4c8af8b442a2ff319.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_4b078cc3e3c9b76f3c40eb8fca5a8e7f6fd033fd.600x338.jpg"],enlace:"https://store.steampowered.com/app/219150/Hotline_Miami/"},
 {nombre:"Cuphead",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg",año:"2017",genero:"Acción, Plataformas, Run & Gun",peso:"4 GB",descripcion:"Juego inspirado en caricaturas de los años 30, con jefes gigantes y mucha dificultad.",requisitos:"Windows 7 • 3 GB RAM • GeForce 9600 GT • 4 GB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_5389476f8a7a56f1d06bd8e3006c61c0b3a8d3ab.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_48f4f916d9b66e04df04b3fa4de1b1f6764ef99a.600x338.jpg"],enlace:"https://store.steampowered.com/app/268910/Cuphead/"}
 ];
 
-let codigoTemporal="",juegoActual=null,colorPerfil="#ff1b1b",amigoActual=null;
+let currentUser=null, currentProfile=null, unsubFriends=null, unsubRequests=null, unsubMessages=null, unsubActivity=null;
+let juegoActual=null, amigoActual=null, amigoActualProfile=null, colorPerfil="#ff1b1b";
 
-function mostrarLogin(){pantallaInicio.classList.add("oculto");pantallaLogin.classList.remove("oculto")}
-function entrarInvitado(){nombrePerfil.innerText="Invitado";miniAvatar.src="https://api.dicebear.com/7.x/bottts/svg?seed=darkloader";pantallaInicio.classList.add("oculto");app.classList.remove("oculto");mostrarJuegos()}
-function abrirRegistro(){loginCard.classList.add("oculto");recuperarCard.classList.add("oculto");registroCard.classList.remove("oculto")}
-function abrirRecuperacion(){loginCard.classList.add("oculto");registroCard.classList.add("oculto");recuperarCard.classList.remove("oculto")}
-function volverLogin(){recuperarCard.classList.add("oculto");registroCard.classList.add("oculto");loginCard.classList.remove("oculto")}
-function togglePassword(id){const input=document.getElementById(id);input.type=input.type==="password"?"text":"password"}
-function medirSeguridad(){const c=registroClave.value;let p=0;if(c.length>=6)p++;if(c.length>=10)p++;if(/[A-Z]/.test(c))p++;if(/[0-9]/.test(c))p++;if(/[^A-Za-z0-9]/.test(c))p++;if(p<=1){barraSeguridad.style.width="25%";barraSeguridad.style.background="red";textoSeguridad.innerText="Seguridad: baja"}else if(p<=3){barraSeguridad.style.width="60%";barraSeguridad.style.background="orange";textoSeguridad.innerText="Seguridad: media"}else{barraSeguridad.style.width="100%";barraSeguridad.style.background="limegreen";textoSeguridad.innerText="Seguridad: alta"}}
-function crearCuenta(){const u=registroUsuario.value.trim(),e=registroCorreo.value.trim(),c=registroClave.value,cc=confirmarClave.value;if(!u||!e||!c||!cc){mensajeRegistro.innerText="Completa todos los campos.";return}if(!e.includes("@")){mensajeRegistro.innerText="Correo no válido.";return}if(c!==cc){mensajeRegistro.innerText="Las contraseñas no coinciden.";return}localStorage.setItem("darkUser",u);localStorage.setItem("darkEmail",e);localStorage.setItem("darkPass",c);localStorage.setItem("darkAvatar","https://api.dicebear.com/7.x/bottts/svg?seed="+u);localStorage.setItem("darkBio","Nuevo jugador en DarkLoader.");mensajeRegistro.style.color="limegreen";mensajeRegistro.innerText="Cuenta creada correctamente.";setTimeout(volverLogin,900)}
-function iniciarSesion(){if(loginUsuario.value===localStorage.getItem("darkUser")&&loginClave.value===localStorage.getItem("darkPass")){if(mantenerSesion.checked)localStorage.setItem("sesionActiva","true");cargarPerfil();pantallaLogin.classList.add("oculto");app.classList.remove("oculto");mostrarJuegos()}else alert("Usuario o contraseña incorrectos.")}
-function cargarPerfil(){const u=localStorage.getItem("darkUser")||"Invitado",a=localStorage.getItem("darkAvatar")||"https://api.dicebear.com/7.x/bottts/svg?seed=darkloader",b=localStorage.getItem("darkBanner")||"",bio=localStorage.getItem("darkBio")||"Sin bio todavía.";colorPerfil=localStorage.getItem("darkColor")||"#ff1b1b";nombrePerfil.innerText=u;miniAvatar.src=a;perfilNombreInput.value=u;perfilBioInput.value=bio;perfilAvatarPreview.src=a;perfilBannerPreview.style.backgroundImage=b?`url(${b})`:"linear-gradient(90deg,#220000,#111)";previewNombre.innerText=u;previewBio.innerText=bio;document.documentElement.style.setProperty("--red",colorPerfil)}
-function abrirPerfil(){cargarPerfil();modalPerfil.classList.remove("oculto")}
-function cerrarPerfil(){modalPerfil.classList.add("oculto")}
-function setColorPerfil(c){colorPerfil=c;document.documentElement.style.setProperty("--red",c)}
-function guardarPerfil(){const n=perfilNombreInput.value.trim()||"Jugador",bio=perfilBioInput.value.trim()||"Sin bio todavía.";localStorage.setItem("darkUser",n);localStorage.setItem("darkBio",bio);localStorage.setItem("darkColor",colorPerfil);cargarPerfil();alert("Perfil guardado.")}
-function resetPerfil(){localStorage.removeItem("darkAvatar");localStorage.removeItem("darkBanner");localStorage.removeItem("darkBio");localStorage.removeItem("darkColor");localStorage.setItem("darkAvatar","https://api.dicebear.com/7.x/bottts/svg?seed="+(localStorage.getItem("darkUser")||"darkloader"));cargarPerfil()}
-function manejarImagen(file,tipo){if(!file||!file.type.startsWith("image/"))return alert("Selecciona una imagen válida.");const r=new FileReader();r.onload=e=>{if(tipo==="avatar"){localStorage.setItem("darkAvatar",e.target.result);perfilAvatarPreview.src=e.target.result;miniAvatar.src=e.target.result}if(tipo==="banner"){localStorage.setItem("darkBanner",e.target.result);perfilBannerPreview.style.backgroundImage=`url(${e.target.result})`}};r.readAsDataURL(file)}
-function setupDrop(drop,input,tipo){drop.onclick=()=>input.click();input.onchange=()=>manejarImagen(input.files[0],tipo);drop.ondragover=e=>{e.preventDefault();drop.classList.add("drag")};drop.ondragleave=()=>drop.classList.remove("drag");drop.ondrop=e=>{e.preventDefault();drop.classList.remove("drag");manejarImagen(e.dataTransfer.files[0],tipo)}}
-function generarCodigo(){return Math.floor(100000+Math.random()*900000).toString()}
-function enviarCodigoCorreo(){const correo=correoRecuperacion.value.trim(),guardado=localStorage.getItem("darkEmail");if(!correo){mensajeRecuperacion.innerText="Escribe tu correo electrónico.";return}if(correo!==guardado){mensajeRecuperacion.innerText="Ese correo no está registrado.";return}codigoTemporal=generarCodigo();mensajeRecuperacion.style.color="limegreen";mensajeRecuperacion.innerText="Código generado.";alert("SIMULACIÓN: código "+codigoTemporal)}
-function enviarCodigoTelefono(){if(telefonoRecuperacion.value.trim().length<6){mensajeRecuperacion.innerText="Número no válido.";return}codigoTemporal=generarCodigo();mensajeRecuperacion.style.color="limegreen";mensajeRecuperacion.innerText="Código generado.";alert("SIMULACIÓN: código "+codigoTemporal)}
-function verificarCodigo(){mensajeRecuperacion.innerText=(codigoRecuperacion.value===codigoTemporal&&codigoTemporal!=="")?"Cuenta verificada.":"Código incorrecto.";mensajeRecuperacion.style.color=(codigoRecuperacion.value===codigoTemporal)?"limegreen":"#ff5555"}
-function cerrarSesion(){localStorage.removeItem("sesionActiva");location.reload()}
-function mostrarJuegos(lista=juegos){const texto=buscador.value.toLowerCase();catalogo.innerHTML="";lista.filter(j=>j.nombre.toLowerCase().includes(texto)||j.genero.toLowerCase().includes(texto)||j.año.toLowerCase().includes(texto)||j.requisitos.toLowerCase().includes(texto)).forEach(j=>{const i=juegos.indexOf(j);catalogo.innerHTML+=`<div class="juego" onclick="abrirJuego(${i})"><img src="${j.imagen}"><div class="juego-info"><h3>${j.nombre}</h3><div class="meta">📅 Año: ${j.año}<br>🎭 Género: ${j.genero}<br>💾 Peso: ${j.peso}</div><span class="badge">Ver ficha</span></div></div>`})}
-function filtrarPor(campo,valor){buscador.value=valor;mostrarJuegos()}
-function filtrarPeso(tipo){let f=juegos.filter(j=>{const p=j.peso.toLowerCase();if(tipo==="ligero")return p.includes("mb");if(tipo==="medio")return p.includes("4 gb")});buscador.value="";mostrarJuegos(f)}
-function limpiarFiltro(){buscador.value="";mostrarJuegos()}
-function abrirJuego(i){const j=juegos[i];juegoActual=j.nombre;app.classList.add("oculto");detalleJuego.classList.remove("oculto");detalleTitulo.innerText=j.nombre;detalleDescripcion.innerText=j.descripcion;detalleDatos.innerHTML=`<b>Año:</b> ${j.año}<br><b>Género:</b> ${j.genero}<br><b>Peso:</b> ${j.peso}`;detalleRequisitos.innerText=j.requisitos;detalleCapturas.innerHTML=j.capturas.map(c=>`<img src="${c}">`).join("");detalleDescarga.href=j.enlace;actualizarBotonFavorito()}
-function volverCatalogo(){detalleJuego.classList.add("oculto");app.classList.remove("oculto")}
-function obtenerFavoritos(){return JSON.parse(localStorage.getItem("favoritosDark")||"[]")}
-function guardarFavoritos(f){localStorage.setItem("favoritosDark",JSON.stringify(f))}
-function toggleFavorito(){let f=obtenerFavoritos();f=f.includes(juegoActual)?f.filter(x=>x!==juegoActual):[...f,juegoActual];guardarFavoritos(f);actualizarBotonFavorito()}
-function actualizarBotonFavorito(){favoritoBtn.innerText=obtenerFavoritos().includes(juegoActual)?"⭐ Quitar de favoritos":"⭐ Agregar a favoritos"}
-function mostrarFavoritos(){mostrarJuegos(juegos.filter(j=>obtenerFavoritos().includes(j.nombre)))}
-function abrirAmigos(){modalAmigos.classList.remove("oculto");renderAmigos()}
-function cerrarAmigos(){modalAmigos.classList.add("oculto")}
-function getAmigos(){return JSON.parse(localStorage.getItem("darkAmigos")||"[]")}
-function setAmigos(a){localStorage.setItem("darkAmigos",JSON.stringify(a))}
-function agregarAmigo(){const n=nuevoAmigo.value.trim();if(!n)return;if(getAmigos().includes(n))return alert("Ya está agregado.");setAmigos([...getAmigos(),n]);nuevoAmigo.value="";renderAmigos()}
-function eliminarAmigo(n){setAmigos(getAmigos().filter(x=>x!==n));if(amigoActual===n)amigoActual=null;renderAmigos();renderChat()}
-function renderAmigos(){listaAmigos.innerHTML=getAmigos().map(n=>`<div class="friend"><span onclick="seleccionarAmigo('${n}')">🎮 ${n}</span><button onclick="eliminarAmigo('${n}')">X</button></div>`).join("")||"<p>No hay amigos todavía.</p>"}
-function seleccionarAmigo(n){amigoActual=n;chatTitulo.innerText="Chat con "+n;renderChat()}
-function chatKey(){return "chat_"+(amigoActual||"nadie")}
-function getChat(){return JSON.parse(localStorage.getItem(chatKey())||"[]")}
-function setChat(c){localStorage.setItem(chatKey(),JSON.stringify(c))}
-function renderChat(){if(!amigoActual){chatBox.innerHTML="<p>Selecciona un amigo.</p>";return}chatBox.innerHTML=getChat().map(m=>`<div class="msg me"><b>Tú:</b> ${m.text||""}${m.img?`<img src="${m.img}">`:""}</div>`).join("");chatBox.scrollTop=chatBox.scrollHeight}
-function enviarMensaje(){if(!amigoActual)return alert("Selecciona un amigo.");const t=mensajeChat.value.trim();if(!t)return;setChat([...getChat(),{text:t}]);mensajeChat.value="";renderChat()}
-chatImagenInput.onchange=()=>{if(!amigoActual)return alert("Selecciona un amigo.");const f=chatImagenInput.files[0];if(!f||!f.type.startsWith("image/"))return;const r=new FileReader();r.onload=e=>{setChat([...getChat(),{img:e.target.result}]);renderChat()};r.readAsDataURL(f)}
-function limpiarChat(){if(!amigoActual)return;localStorage.removeItem(chatKey());renderChat()}
-function toggleMusica(){const a=musicaFondo;a.volume=.25;a.paused?a.play().catch(()=>alert("Toca otra vez para activar la música.")):a.pause()}
-const canvas=document.getElementById("fondoAnimado"),ctx=canvas.getContext("2d");canvas.width=innerWidth;canvas.height=innerHeight;const caracteres="01 DARKLOADER GAME OVER XP LEVEL 2026 ",fontSize=16;let columnas=canvas.width/fontSize,drops=Array(Math.floor(columnas)).fill(1);
+function $(id){return document.getElementById(id)}
+function toast(t){$("notificacion").innerText=t;$("notificacion").classList.remove("oculto");setTimeout(()=>$("notificacion").classList.add("oculto"),2800)}
+function cleanNick(n){return (n||"").trim().toLowerCase()}
+function chatId(a,b){return [a,b].sort().join("_")}
+function avatarDefault(seed){return "https://api.dicebear.com/7.x/bottts/svg?seed="+encodeURIComponent(seed||"darkloader")}
+
+async function addActividad(texto,tipo="info",extra={}){
+  if(!currentUser) return;
+  await addDoc(collection(db,"activity"),{
+    uid:currentUser.uid,
+    nickname:currentProfile?.nickname || "Jugador",
+    avatar:currentProfile?.avatar || avatarDefault("darkloader"),
+    texto,tipo,...extra,
+    createdAt:serverTimestamp()
+  });
+}
+
+window.mostrarLogin=()=>{$("pantallaInicio").classList.add("oculto");$("pantallaLogin").classList.remove("oculto")};
+window.abrirRegistro=()=>{$("loginCard").classList.add("oculto");$("recuperarCard").classList.add("oculto");$("registroCard").classList.remove("oculto")};
+window.abrirRecuperacion=()=>{$("loginCard").classList.add("oculto");$("registroCard").classList.add("oculto");$("recuperarCard").classList.remove("oculto")};
+window.volverLogin=()=>{$("recuperarCard").classList.add("oculto");$("registroCard").classList.add("oculto");$("loginCard").classList.remove("oculto")};
+window.togglePassword=(id)=>{const input=$(id);input.type=input.type==="password"?"text":"password"};
+window.medirSeguridad=()=>{const c=$("registroClave").value;let p=0;if(c.length>=6)p++;if(c.length>=10)p++;if(/[A-Z]/.test(c))p++;if(/[0-9]/.test(c))p++;if(/[^A-Za-z0-9]/.test(c))p++;if(p<=1){$("barraSeguridad").style.width="25%";$("barraSeguridad").style.background="red";$("textoSeguridad").innerText="Seguridad: baja"}else if(p<=3){$("barraSeguridad").style.width="60%";$("barraSeguridad").style.background="orange";$("textoSeguridad").innerText="Seguridad: media"}else{$("barraSeguridad").style.width="100%";$("barraSeguridad").style.background="limegreen";$("textoSeguridad").innerText="Seguridad: alta"}};
+
+window.crearCuenta=async()=>{
+  const nick=$("registroUsuario").value.trim();
+  const email=$("registroCorreo").value.trim();
+  const pass=$("registroClave").value;
+  const confirm=$("confirmarClave").value;
+  if(!nick||!email||!pass||!confirm) return $("mensajeRegistro").innerText="Completa todos los campos.";
+  if(pass!==confirm) return $("mensajeRegistro").innerText="Las contraseñas no coinciden.";
+  try{
+    const q=query(collection(db,"users"),where("nicknameLower","==",cleanNick(nick)),limit(1));
+    const snap=await getDocs(q);
+    if(!snap.empty) return $("mensajeRegistro").innerText="Ese nickname ya existe.";
+    await setPersistence(auth, $("mantenerSesion")?.checked ? browserLocalPersistence : browserSessionPersistence);
+    const cred=await createUserWithEmailAndPassword(auth,email,pass);
+    const profile={
+      uid:cred.user.uid,
+      nickname:nick,
+      nicknameLower:cleanNick(nick),
+      email,
+      avatar:avatarDefault(nick),
+      banner:"",
+      bio:"Nuevo jugador en DarkLoader.",
+      color:"#ff1b1b",
+      status:"online",
+      friends:[],
+      favorites:[],
+      createdAt:serverTimestamp(),
+      lastSeen:serverTimestamp()
+    };
+    await setDoc(doc(db,"users",cred.user.uid),profile);
+    $("mensajeRegistro").style.color="limegreen";
+    $("mensajeRegistro").innerText="Cuenta creada correctamente.";
+    await addActividad("creó su cuenta","login");
+  }catch(e){$("mensajeRegistro").innerText=e.message;}
+};
+
+window.iniciarSesion=async()=>{
+  try{
+    await setPersistence(auth, $("mantenerSesion").checked ? browserLocalPersistence : browserSessionPersistence);
+    await signInWithEmailAndPassword(auth,$("loginCorreo").value.trim(),$("loginClave").value);
+  }catch(e){alert("Error: "+e.message);}
+};
+
+window.recuperarPassword=async()=>{
+  const email=$("correoRecuperacion").value.trim();
+  if(!email) return $("mensajeRecuperacion").innerText="Escribe tu correo.";
+  try{await sendPasswordResetEmail(auth,email);$("mensajeRecuperacion").style.color="limegreen";$("mensajeRecuperacion").innerText="Correo de recuperación enviado.";}
+  catch(e){$("mensajeRecuperacion").innerText=e.message;}
+};
+
+async function cargarPerfil(uid){
+  const ref=doc(db,"users",uid);
+  const snap=await getDoc(ref);
+  if(!snap.exists()) return;
+  currentProfile=snap.data();
+  $("nombrePerfil").innerText=currentProfile.nickname || "Jugador";
+  $("miniAvatar").src=currentProfile.avatar || avatarDefault(currentProfile.nickname);
+  $("perfilNombreInput").value=currentProfile.nickname || "";
+  $("perfilAvatarUrl").value=currentProfile.avatar || "";
+  $("perfilBannerUrl").value=currentProfile.banner || "";
+  $("perfilBioInput").value=currentProfile.bio || "";
+  $("perfilAvatarPreview").src=currentProfile.avatar || avatarDefault(currentProfile.nickname);
+  $("perfilBannerPreview").style.backgroundImage=currentProfile.banner ? `url(${currentProfile.banner})` : "linear-gradient(90deg,#220000,#111)";
+  $("previewNombre").innerText=currentProfile.nickname || "Jugador";
+  $("previewBio").innerText=currentProfile.bio || "Sin bio todavía.";
+  $("estadoUsuario").value=currentProfile.status || "online";
+  colorPerfil=currentProfile.color || "#ff1b1b";
+  document.documentElement.style.setProperty("--red",colorPerfil);
+  pintarEstado();
+}
+
+function pintarEstado(){
+  const e=$("estadoUsuario").value || "online";
+  let c="#00ff88"; if(e==="ausente")c="#ff9f1c"; if(e==="ocupado")c="#ff3333"; if(e==="invisible")c="#777";
+  $("estadoDot").style.background=c; $("estadoDot").style.boxShadow=`0 0 9px ${c}`;
+}
+
+window.cambiarEstado=async()=>{
+  if(!currentUser) return;
+  await updateDoc(doc(db,"users",currentUser.uid),{status:$("estadoUsuario").value,lastSeen:serverTimestamp()});
+  await cargarPerfil(currentUser.uid);
+  await addActividad("cambió su estado a "+$("estadoUsuario").value,"estado");
+};
+
+window.abrirPerfil=async()=>{await cargarPerfil(currentUser.uid);$("modalPerfil").classList.remove("oculto")};
+window.cerrarPerfil=()=>{$("modalPerfil").classList.add("oculto")};
+window.setColorPerfil=(c)=>{colorPerfil=c;document.documentElement.style.setProperty("--red",c)};
+window.guardarPerfil=async()=>{
+  if(!currentUser) return;
+  const nick=$("perfilNombreInput").value.trim();
+  if(!nick) return alert("El nickname no puede estar vacío.");
+  await updateDoc(doc(db,"users",currentUser.uid),{
+    nickname:nick,
+    nicknameLower:cleanNick(nick),
+    avatar:$("perfilAvatarUrl").value.trim() || avatarDefault(nick),
+    banner:$("perfilBannerUrl").value.trim(),
+    bio:$("perfilBioInput").value.trim(),
+    color:colorPerfil,
+    lastSeen:serverTimestamp()
+  });
+  await cargarPerfil(currentUser.uid);
+  await addActividad("actualizó su perfil","perfil");
+  toast("Perfil guardado.");
+};
+
+function iniciarListeners(){
+  if(unsubFriends)unsubFriends(); if(unsubRequests)unsubRequests(); if(unsubActivity)unsubActivity();
+  unsubFriends=onSnapshot(doc(db,"users",currentUser.uid),(snap)=>{currentProfile=snap.data();renderAmigos();});
+  const reqQ=query(collection(db,"friendRequests"),where("toUid","==",currentUser.uid),where("status","==","pending"));
+  unsubRequests=onSnapshot(reqQ,()=>renderSolicitudes());
+  const actQ=query(collection(db,"activity"),orderBy("createdAt","desc"),limit(60));
+  unsubActivity=onSnapshot(actQ,(snap)=>renderActividad(snap.docs.map(d=>({id:d.id,...d.data()}))));
+}
+
+window.buscarUsuario=async()=>{
+  const nick=cleanNick($("buscarUsuarioInput").value);
+  $("resultadoBusqueda").innerHTML="Buscando...";
+  if(!nick) return $("resultadoBusqueda").innerHTML="Escribe un nickname.";
+  const q=query(collection(db,"users"),where("nicknameLower","==",nick),limit(1));
+  const snap=await getDocs(q);
+  if(snap.empty) return $("resultadoBusqueda").innerHTML="<p>No encontrado.</p>";
+  const u=snap.docs[0].data();
+  if(u.uid===currentUser.uid) return $("resultadoBusqueda").innerHTML="<p>Eres tú 😎</p>";
+  $("resultadoBusqueda").innerHTML=`<div class="friend"><span>👤 ${u.nickname}</span><button onclick="enviarSolicitud('${u.uid}','${u.nickname}')">Agregar</button></div>`;
+};
+
+window.enviarSolicitud=async(toUid,toNick)=>{
+  const id=chatId(currentUser.uid,toUid);
+  await setDoc(doc(db,"friendRequests",id),{
+    fromUid:currentUser.uid,
+    fromNick:currentProfile.nickname,
+    toUid,
+    toNick,
+    status:"pending",
+    createdAt:serverTimestamp()
+  });
+  await addActividad("envió solicitud a "+toNick,"amigo");
+  toast("Solicitud enviada.");
+};
+
+async function renderSolicitudes(){
+  const reqQ=query(collection(db,"friendRequests"),where("toUid","==",currentUser.uid),where("status","==","pending"));
+  const snap=await getDocs(reqQ);
+  $("listaSolicitudes").innerHTML=snap.docs.map(d=>{
+    const r=d.data();
+    return `<div class="request">📨 ${r.fromNick} quiere agregarte<br><button onclick="aceptarSolicitud('${d.id}','${r.fromUid}','${r.fromNick}')">Aceptar</button> <button class="secundario" onclick="rechazarSolicitud('${d.id}')">Rechazar</button></div>`;
+  }).join("") || "<p>No hay solicitudes.</p>";
+}
+
+window.aceptarSolicitud=async(reqId,fromUid,fromNick)=>{
+  await updateDoc(doc(db,"friendRequests",reqId),{status:"accepted"});
+  await updateDoc(doc(db,"users",currentUser.uid),{friends:arrayUnion(fromUid)});
+  await updateDoc(doc(db,"users",fromUid),{friends:arrayUnion(currentUser.uid)});
+  await addActividad("ahora es amigo de "+fromNick,"amigo");
+  toast("Solicitud aceptada.");
+};
+
+window.rechazarSolicitud=async(reqId)=>{await updateDoc(doc(db,"friendRequests",reqId),{status:"rejected"});toast("Solicitud rechazada.");};
+
+async function renderAmigos(){
+  const friends=currentProfile?.friends || [];
+  if(!friends.length) return $("listaAmigos").innerHTML="<p>No tienes amigos todavía.</p>";
+  const users=[];
+  for(const uid of friends){
+    const s=await getDoc(doc(db,"users",uid));
+    if(s.exists()) users.push(s.data());
+  }
+  $("listaAmigos").innerHTML=users.map(u=>`<div class="friend"><div><span class="friend-name" onclick="seleccionarAmigo('${u.uid}')">🟢 ${u.nickname}</span><div class="small">Estado: ${u.status||"online"}</div></div><button onclick="eliminarAmigo('${u.uid}')">X</button></div>`).join("");
+}
+
+window.eliminarAmigo=async(uid)=>{
+  await updateDoc(doc(db,"users",currentUser.uid),{friends:arrayRemove(uid)});
+  await updateDoc(doc(db,"users",uid),{friends:arrayRemove(currentUser.uid)});
+  toast("Amigo eliminado.");
+};
+
+window.seleccionarAmigo=async(uid)=>{
+  const s=await getDoc(doc(db,"users",uid));
+  if(!s.exists()) return;
+  amigoActual=uid; amigoActualProfile=s.data();
+  $("chatTitulo").innerText="Chat con "+amigoActualProfile.nickname;
+  $("perfilAmigoTitulo").innerText=amigoActualProfile.nickname;
+  $("perfilAmigoVista").innerHTML=`<p><img src="${amigoActualProfile.avatar||avatarDefault(amigoActualProfile.nickname)}" class="avatar"> <b>${amigoActualProfile.nickname}</b></p><p>Estado: ${amigoActualProfile.status||"online"}</p><p>${amigoActualProfile.bio||""}</p><button onclick="mostrarSocialTab('chat')">Abrir chat</button>`;
+  mostrarSocialTab("chat");
+  escucharChat();
+};
+
+function escucharChat(){
+  if(unsubMessages)unsubMessages();
+  const id=chatId(currentUser.uid,amigoActual);
+  const q=query(collection(db,"chats",id,"messages"),orderBy("createdAt","asc"),limit(100));
+  unsubMessages=onSnapshot(q,(snap)=>{
+    $("chatBox").innerHTML=snap.docs.map(d=>{
+      const m=d.data();
+      const mine=m.fromUid===currentUser.uid;
+      return `<div class="msg ${mine?"me":"friend"}"><b>${mine?"Tú":amigoActualProfile.nickname}:</b> ${m.text||""}<div class="small">${m.createdAt?.toDate?.().toLocaleString?.()||""}</div></div>`;
+    }).join("");
+    $("chatBox").scrollTop=$("chatBox").scrollHeight;
+  });
+}
+
+window.enviarMensaje=async()=>{
+  if(!amigoActual) return alert("Selecciona un amigo.");
+  const text=$("mensajeChat").value.trim();
+  if(!text) return;
+  const id=chatId(currentUser.uid,amigoActual);
+  await setDoc(doc(db,"chats",id),{members:[currentUser.uid,amigoActual],updatedAt:serverTimestamp()},{merge:true});
+  await addDoc(collection(db,"chats",id,"messages"),{fromUid:currentUser.uid,text,createdAt:serverTimestamp()});
+  $("mensajeChat").value="";
+};
+
+window.limpiarChatVisual=()=>{$("chatBox").innerHTML=""};
+
+function renderActividad(items=[]){
+  const html=items.map(x=>`<div class="activity"><b>${x.nickname||"Jugador"}</b>: ${x.texto}<div class="small">${x.createdAt?.toDate?.().toLocaleString?.()||""}</div></div>`).join("") || "<p>Sin actividad.</p>";
+  $("actividadGlobal").innerHTML=html; $("actividadAmigos").innerHTML=html;
+  $("miniActividad").innerHTML=items.slice(0,4).map(x=>`<div class="small">• ${x.texto}</div>`).join("") || "<p class='small'>Sin actividad</p>";
+}
+
+window.abrirSocial=(tab="amigos")=>{$("modalSocial").classList.remove("oculto");renderAmigos();renderSolicitudes();mostrarSocialTab(tab)};
+window.cerrarSocial=()=>{$("modalSocial").classList.add("oculto")};
+window.mostrarSocialTab=(tab)=>{["Amigos","Chat","Solicitudes","Actividad"].forEach(t=>$("tab"+t).classList.add("oculto"));$("tab"+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.remove("oculto")};
+
+window.cerrarSesion=async()=>{if(currentUser) await updateDoc(doc(db,"users",currentUser.uid),{status:"invisible",lastSeen:serverTimestamp()});await signOut(auth);location.reload()};
+
+window.mostrarJuegos=(lista=juegos)=>{const texto=$("buscador").value.toLowerCase();$("catalogo").innerHTML="";lista.filter(j=>j.nombre.toLowerCase().includes(texto)||j.genero.toLowerCase().includes(texto)||j.año.toLowerCase().includes(texto)||j.requisitos.toLowerCase().includes(texto)).forEach(j=>{const i=juegos.indexOf(j);$("catalogo").innerHTML+=`<div class="juego" onclick="abrirJuego(${i})"><img src="${j.imagen}"><div class="juego-info"><h3>${j.nombre}</h3><div class="meta">📅 Año: ${j.año}<br>🎭 Género: ${j.genero}<br>💾 Peso: ${j.peso}</div><span class="badge">Ver ficha</span></div></div>`})};
+window.filtrarPor=(campo,valor)=>{$("buscador").value=valor;mostrarJuegos()};
+window.filtrarPeso=(tipo)=>{let f=juegos.filter(j=>{const p=j.peso.toLowerCase();if(tipo==="ligero")return p.includes("mb");if(tipo==="medio")return p.includes("4 gb")});$("buscador").value="";mostrarJuegos(f)};
+window.limpiarFiltro=()=>{$("buscador").value="";mostrarJuegos()};
+window.abrirJuego=async(i)=>{const j=juegos[i];juegoActual=j.nombre;$("app").classList.add("oculto");$("detalleJuego").classList.remove("oculto");$("detalleTitulo").innerText=j.nombre;$("detalleDescripcion").innerText=j.descripcion;$("detalleDatos").innerHTML=`<b>Año:</b> ${j.año}<br><b>Género:</b> ${j.genero}<br><b>Peso:</b> ${j.peso}`;$("detalleRequisitos").innerText=j.requisitos;$("detalleCapturas").innerHTML=j.capturas.map(c=>`<img src="${c}">`).join("");$("detalleDescarga").href=j.enlace;actualizarBotonFavorito();await addActividad("abrió la ficha de "+j.nombre,"juego",{game:j.nombre})};
+window.registrarDescarga=async()=>{if(juegoActual) await addActividad("abrió recursos de "+juegoActual,"descarga",{game:juegoActual})};
+window.volverCatalogo=()=>{$("detalleJuego").classList.add("oculto");$("app").classList.remove("oculto")};
+function obtenerFavoritos(){return currentProfile?.favorites || []}
+window.toggleFavorito=async()=>{let favs=obtenerFavoritos();const adding=!favs.includes(juegoActual);await updateDoc(doc(db,"users",currentUser.uid),{favorites:adding?arrayUnion(juegoActual):arrayRemove(juegoActual)});await cargarPerfil(currentUser.uid);actualizarBotonFavorito();await addActividad((adding?"agregó ":"quitó ")+juegoActual+(adding?" a favoritos":" de favoritos"),"favorito",{game:juegoActual})};
+function actualizarBotonFavorito(){$("favoritoBtn").innerText=obtenerFavoritos().includes(juegoActual)?"⭐ Quitar de favoritos":"⭐ Agregar a favoritos"}
+window.mostrarFavoritos=()=>{mostrarJuegos(juegos.filter(j=>obtenerFavoritos().includes(j.nombre)))};
+window.toggleMusica=()=>{const a=$("musicaFondo");a.volume=.25;a.paused?a.play().catch(()=>alert("Toca otra vez para activar la música.")):a.pause()};
+
+onAuthStateChanged(auth,async(user)=>{
+  if(user){
+    currentUser=user;
+    await cargarPerfil(user.uid);
+    $("pantallaInicio").classList.add("oculto"); $("pantallaLogin").classList.add("oculto"); $("app").classList.remove("oculto");
+    await updateDoc(doc(db,"users",user.uid),{status:$("estadoUsuario").value||"online",lastSeen:serverTimestamp()});
+    iniciarListeners(); mostrarJuegos();
+  }else{
+    currentUser=null;
+  }
+});
+
+const canvas=$("fondoAnimado"),ctx=canvas.getContext("2d");canvas.width=innerWidth;canvas.height=innerHeight;const caracteres="01 DARKLOADER ONLINE FIREBASE CHAT XP 2026 ",fontSize=16;let columnas=canvas.width/fontSize,drops=Array(Math.floor(columnas)).fill(1);
 function dibujarFondo(){ctx.fillStyle="rgba(0,0,0,.08)";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#ff1111";ctx.font=fontSize+"px monospace";drops.forEach((y,i)=>{ctx.fillText(caracteres[Math.floor(Math.random()*caracteres.length)],i*fontSize,y*fontSize);if(y*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]++})}
 setInterval(dibujarFondo,40);
 addEventListener("resize",()=>{canvas.width=innerWidth;canvas.height=innerHeight;columnas=canvas.width/fontSize;drops=Array(Math.floor(columnas)).fill(1)});
-addEventListener("load",()=>{setupDrop(avatarDrop,avatarInput,"avatar");setupDrop(bannerDrop,bannerInput,"banner");if(localStorage.getItem("sesionActiva")==="true"){cargarPerfil();pantallaInicio.classList.add("oculto");pantallaLogin.classList.add("oculto");app.classList.remove("oculto");mostrarJuegos()}});
 </script>
 
 </body>
