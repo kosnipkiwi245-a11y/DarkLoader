@@ -61,6 +61,18 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 1
 .social-grid{display:grid;grid-template-columns:280px 1fr 260px;gap:15px}.friend-list,.activity-list{background:#111;border:1px solid #333;border-radius:14px;padding:12px;max-height:440px;overflow:auto}.friend,.request,.activity{padding:10px;border-bottom:1px solid #222;color:#ddd}.friend:last-child,.activity:last-child{border-bottom:0}.friend-head{display:flex;justify-content:space-between;gap:8px;align-items:center}.friend-name{cursor:pointer}.friend-name:hover{color:var(--red)}.small{font-size:12px;color:#aaa}
 .chat-box{background:#080808;border:1px solid #333;border-radius:14px;height:360px;overflow:auto;padding:12px}.msg{background:#181818;border:1px solid #2a2a2a;border-radius:12px;padding:10px;margin:8px 0;max-width:85%}.msg.me{margin-left:auto;border-color:var(--red)}.msg.friend{margin-right:auto;border-color:#444}.tab-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
 .notification{position:fixed;right:20px;bottom:20px;background:#111;border:1px solid var(--red);padding:15px;border-radius:12px;box-shadow:0 0 20px rgba(255,0,0,.35);z-index:200}
+
+.notif-wrap{position:relative}
+.notif-btn{position:relative}
+.notif-count{position:absolute;top:-8px;right:-8px;background:#1f9fff;color:white;border-radius:999px;min-width:20px;height:20px;display:grid;place-items:center;font-size:12px;border:1px solid white}
+.notif-panel{position:fixed;right:24px;top:92px;width:min(420px,92vw);max-height:70vh;overflow:auto;background:#0b0b0b;border:1px solid var(--red);border-radius:16px;box-shadow:0 0 35px rgba(255,0,0,.38);z-index:150;padding:14px}
+.notif-head{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #222;padding-bottom:10px;margin-bottom:10px}
+.notif-item{background:#111;border:1px solid #292929;border-radius:12px;padding:12px;margin:10px 0}
+.notif-item.unread{border-color:#1f9fff;box-shadow:0 0 12px rgba(31,159,255,.18)}
+.notif-item p{margin:0 0 8px;color:#ddd}
+.notif-actions{display:flex;gap:8px;flex-wrap:wrap}
+.notif-actions button{padding:8px 10px;font-size:12px}
+
 @media(max-width:1000px){.social-grid{grid-template-columns:1fr}.layout{flex-direction:column}.sidebar{width:100%;min-height:auto}.tooltip{position:static;width:100%;margin-top:10px}.navbar{height:auto;flex-direction:column;gap:12px;padding:16px}.logo-main h1{font-size:38px}.hero h1{font-size:32px}.perfil-top{flex-direction:column;text-align:center}}
 </style>
 </head>
@@ -117,6 +129,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 1
     <nav><a href="#" onclick="limpiarFiltro()">Tienda</a><a href="#" onclick="mostrarFavoritos()">Favoritos</a><a href="#" onclick="abrirSocial()">Amigos y chat</a><a href="#" onclick="abrirSocial('actividad')">Actividad</a></nav>
     <div class="nav-actions">
       <select id="estadoUsuario" onchange="cambiarEstado()" style="width:135px"><option value="online">🟢 En línea</option><option value="ausente">🟠 Ausente</option><option value="ocupado">🔴 Ocupado</option><option value="invisible">⚫ Invisible</option></select>
+      <div class="notif-wrap">
+        <button class="secundario notif-btn" onclick="toggleNotificaciones()">🔔<span id="notifCount" class="notif-count oculto">0</span></button>
+      </div>
       <button class="secundario" onclick="toggleMusica()">🎵</button>
       <img id="miniAvatar" class="avatar" onclick="abrirPerfil()" src="">
       <span><span id="estadoDot" class="status-dot"></span><span id="nombrePerfil">Jugador</span></span>
@@ -239,6 +254,15 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 1
   </div>
 </section>
 
+
+<section id="panelNotificaciones" class="notif-panel oculto">
+  <div class="notif-head">
+    <h3>🔔 Notificaciones</h3>
+    <button class="secundario" onclick="marcarNotificacionesLeidas()">Marcar leídas</button>
+  </div>
+  <div id="listaNotificaciones"></div>
+</section>
+
 <div id="notificacion" class="notification oculto"></div>
 <audio id="musicaFondo" loop><source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3" type="audio/mpeg"></audio>
 
@@ -272,12 +296,12 @@ const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
 const juegos=[
-{nombre:"Undertale",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg",año:"2015",genero:"RPG, Indie",peso:"200 MB",descripcion:"RPG donde puedes luchar o perdonar enemigos. Tus decisiones cambian la historia.",requisitos:"Windows XP o superior • 3 GB RAM • 200 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_6ded97a2c98473ac1e8a2b3b7d143a2d3912ccf2.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_b9018b4d7cd0c14a1786b1e4d6e9ef9b72d2b0a4.600x338.jpg"],enlace:"https://store.steampowered.com/app/391540/Undertale/"},
-{nombre:"Hotline Miami",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg",año:"2012",genero:"Acción, Arcade, Indie",peso:"250 MB",descripcion:"Acción retro violenta con vista superior, música electrónica intensa y combates rápidos.",requisitos:"Windows XP/Vista/7 • 512 MB RAM • OpenGL 2.1 • 250 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_840d116d5c99f1de755c38b4c8af8b442a2ff319.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_4b078cc3e3c9b76f3c40eb8fca5a8e7f6fd033fd.600x338.jpg"],enlace:"https://store.steampowered.com/app/219150/Hotline_Miami/"},
-{nombre:"Cuphead",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg",año:"2017",genero:"Acción, Plataformas, Run & Gun",peso:"4 GB",descripcion:"Juego inspirado en caricaturas de los años 30, con jefes gigantes y mucha dificultad.",requisitos:"Windows 7 • 3 GB RAM • GeForce 9600 GT • 4 GB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_5389476f8a7a56f1d06bd8e3006c61c0b3a8d3ab.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_48f4f916d9b66e04df04b3fa4de1b1f6764ef99a.600x338.jpg"],enlace:"https://store.steampowered.com/app/268910/Cuphead/"}
+{nombre:"Undertale",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/391540/header.jpg",año:"2015",genero:"RPG, Indie",peso:"200 MB",descripcion:"RPG donde puedes luchar o perdonar enemigos. Tus decisiones cambian la historia.",requisitos:"Windows XP o superior • 3 GB RAM • 200 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_6ded97a2c98473ac1e8a2b3b7d143a2d3912ccf2.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_b9018b4d7cd0c14a1786b1e4d6e9ef9b72d2b0a4.600x338.jpg"],enlace:"http://mediafire.com/file/6f47x5lbjgjq9t7/Undertale.rar/file"},
+{nombre:"Hotline Miami",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg",año:"2012",genero:"Acción, Arcade, Indie",peso:"250 MB",descripcion:"Acción retro violenta con vista superior, música electrónica intensa y combates rápidos.",requisitos:"Windows XP/Vista/7 • 512 MB RAM • OpenGL 2.1 • 250 MB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_840d116d5c99f1de755c38b4c8af8b442a2ff319.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_4b078cc3e3c9b76f3c40eb8fca5a8e7f6fd033fd.600x338.jpg"],enlace:""},
+{nombre:"Cuphead",imagen:"https://cdn.cloudflare.steamstatic.com/steam/apps/268910/header.jpg",año:"2017",genero:"Acción, Plataformas, Run & Gun",peso:"4 GB",descripcion:"Juego inspirado en caricaturas de los años 30, con jefes gigantes y mucha dificultad.",requisitos:"Windows 7 • 3 GB RAM • GeForce 9600 GT • 4 GB disponibles",capturas:["https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_5389476f8a7a56f1d06bd8e3006c61c0b3a8d3ab.600x338.jpg","https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_48f4f916d9b66e04df04b3fa4de1b1f6764ef99a.600x338.jpg"],enlace:""}
 ];
 
-let currentUser=null, currentProfile=null, unsubFriends=null, unsubRequests=null, unsubMessages=null, unsubActivity=null;
+let currentUser=null, currentProfile=null, unsubFriends=null, unsubRequests=null, unsubMessages=null, unsubActivity=null, unsubNotifs=null;
 let juegoActual=null, amigoActual=null, amigoActualProfile=null, colorPerfil="#ff1b1b";
 
 function $(id){return document.getElementById(id)}
@@ -415,6 +439,7 @@ function iniciarListeners(){
   unsubRequests=onSnapshot(reqQ,()=>renderSolicitudes());
   const actQ=query(collection(db,"activity"),orderBy("createdAt","desc"),limit(60));
   unsubActivity=onSnapshot(actQ,(snap)=>renderActividad(snap.docs.map(d=>({id:d.id,...d.data()}))));
+  escucharNotificaciones();
 }
 
 window.buscarUsuario=async()=>{
@@ -440,6 +465,7 @@ window.enviarSolicitud=async(toUid,toNick)=>{
     createdAt:serverTimestamp()
   });
   await addActividad("envió solicitud a "+toNick,"amigo");
+  await crearNotificacion(toUid,"friend_request",`${currentProfile.nickname} te envió una solicitud de amistad`,{requestId:id});
   toast("Solicitud enviada.");
 };
 
@@ -457,6 +483,7 @@ window.aceptarSolicitud=async(reqId,fromUid,fromNick)=>{
   await updateDoc(doc(db,"users",currentUser.uid),{friends:arrayUnion(fromUid)});
   await updateDoc(doc(db,"users",fromUid),{friends:arrayUnion(currentUser.uid)});
   await addActividad("ahora es amigo de "+fromNick,"amigo");
+  await crearNotificacion(fromUid,"friend_accept",`${currentProfile.nickname} aceptó tu solicitud de amistad`);
   toast("Solicitud aceptada.");
 };
 
@@ -511,6 +538,7 @@ window.enviarMensaje=async()=>{
   const id=chatId(currentUser.uid,amigoActual);
   await setDoc(doc(db,"chats",id),{members:[currentUser.uid,amigoActual],updatedAt:serverTimestamp()},{merge:true});
   await addDoc(collection(db,"chats",id,"messages"),{fromUid:currentUser.uid,text,createdAt:serverTimestamp()});
+  await crearNotificacion(amigoActual,"message",`${currentProfile.nickname}: ${text.slice(0,80)}`);
   $("mensajeChat").value="";
 };
 
