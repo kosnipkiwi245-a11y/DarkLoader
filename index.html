@@ -1,246 +1,244 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DarkLoader</title>
-  <style>
-    body {
-      margin: 0;
-      background: #0b0b0b;
-      color: white;
-      font-family: Arial;
-    }
+<meta charset="UTF-8">
+<title>DarkLoader</title>
 
-    /* NAVBAR */
-    .navbar {
-      background: #111;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid red;
-    }
-
-    .logo {
-      color: red;
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    .menu a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
-    }
-
-    .menu a:hover {
-      color: red;
-    }
-
-    /* LAYOUT */
-    .container {
-      display: flex;
-    }
-
-    /* SIDEBAR */
-    .sidebar {
-      width: 200px;
-      background: #0f0f0f;
-      padding: 15px;
-      border-right: 1px solid #222;
-    }
-
-    .sidebar h3 {
-      color: red;
-      font-size: 14px;
-    }
-
-    .sidebar a {
-      display: block;
-      color: #ccc;
-      text-decoration: none;
-      margin: 5px 0;
-    }
-
-    .sidebar a:hover {
-      color: red;
-    }
-
-    /* CONTENT */
-    .content {
-      flex: 1;
-      padding: 20px;
-    }
-
-    /* HERO */
-    .hero {
-      background: url("https://images.unsplash.com/photo-1605902711622-cfb43c4437d1") center/cover;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      font-weight: bold;
-      border: 1px solid #222;
-    }
-
-    /* GAMES GRID */
-    .games {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .game {
-      background: #111;
-      padding: 10px;
-      border: 1px solid #222;
-      text-align: center;
-      transition: 0.2s;
-    }
-
-    .game:hover {
-      transform: scale(1.05);
-      border-color: red;
-    }
-
-    .game img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .btn {
-      background: red;
-      padding: 10px;
-      display: inline-block;
-      margin-top: 5px;
-      cursor: pointer;
-    }
-
-  </body {
-  background: #0f172a;
-  color: white;
-  font-family: Arial;
+<style>
+body{
+  margin:0;
+  background:#0b0b0b;
+  color:white;
+  font-family:Arial;
 }
 
-.titulo {
-  text-align: center;
-  margin: 20px;
+/* INICIO */
+#inicio{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  flex-direction:column;
 }
 
-.grid-juegos {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 200px);
-  gap: 20px;
-  justify-content: center;
+button{
+  background:red;
+  border:none;
+  padding:12px;
+  color:white;
+  cursor:pointer;
+  margin:5px;
 }
 
-.juego {
-  background: #1e293b;
-  padding: 10px;
-  border-radius: 10px;
-  transition: 0.3s;
-  cursor: pointer;
+/* LOGIN */
+#login{
+  display:none;
+  text-align:center;
+  margin-top:100px;
 }
 
-.juego:hover {
-  transform: scale(1.05);
-  background: #334155;
+input{
+  padding:10px;
+  margin:5px;
 }
 
-.juego img {
-  width: 100%;
-  border-radius: 8px;
-}>
+/* APP */
+#app{
+  display:none;
+}
+
+.nav{
+  background:#111;
+  padding:10px;
+  display:flex;
+  justify-content:space-between;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,200px);
+  gap:20px;
+  padding:20px;
+}
+
+.card{
+  background:#111;
+  padding:10px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:scale(1.05);
+}
+
+.card img{
+  width:100%;
+}
+
+/* DETALLE */
+#detalle{
+  display:none;
+  padding:20px;
+}
+</style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="logo">🔥 DARKLOADER</div>
-  <div class="menu">
-    <a href="#">Tienda</a>
-    <a href="#">Biblioteca</a>
-    <a href="#">Comunidad</a>
-  </div>
+<!-- INICIO -->
+<div id="inicio">
+  <h1>🔥 DARKLOADER 🔥</h1>
+  <button onclick="mostrarLogin()">Entrar</button>
 </div>
 
-<div class="container">
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <h3>EXPLORAR</h3>
-    <a href="#">Populares</a>
-    <a href="#">Gratis</a>
-    <a href="#">Acción</a>
-    <a href="#">RPG</a>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="content">
-
-    <div class="hero">
-      🔥 JUEGO DESTACADO 🔥
-    </div>
-
-    <h2>Juegos</h2>
-
-    <div class="games" id="games"></div>
-
-  </div>
+<!-- LOGIN -->
+<div id="login">
+  <h2>Login</h2>
+  <input id="user" placeholder="Usuario"><br>
+  <input id="pass" type="password" placeholder="Contraseña"><br>
+  <button onclick="login()">Entrar</button>
+  <button onclick="registro()">Registrarse</button>
 </div>
+
+<!-- APP -->
+<div id="app">
+  <div class="nav">
+    <h2>DARKLOADER</h2>
+    <button onclick="logout()">Salir</button>
+  </div>
+
+  <div class="grid" id="juegos"></div>
+</div>
+
+<!-- DETALLE -->
+<div id="detalle"></div>
 
 <script>
-const juegos = [
-  {
-    nombre: "DOOM Eternal",
-    imagen: "https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg"
-  },
-  {
-    nombre: "Cyberpunk 2077",
-    imagen: "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg"
-  },
-  {
-    nombre: "Elden Ring",
-    imagen: "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"
+
+/* LOGIN */
+function mostrarLogin(){
+  inicio.style.display="none";
+  login.style.display="block";
+}
+
+function registro(){
+  localStorage.setItem("user", user.value);
+  localStorage.setItem("pass", pass.value);
+  alert("Registrado");
+}
+
+function login(){
+  if(user.value==localStorage.getItem("user") &&
+     pass.value==localStorage.getItem("pass")){
+      login.style.display="none";
+      app.style.display="block";
+  }else{
+    alert("Error");
   }
+}
+
+function logout(){
+  location.reload();
+}
+
+/* 🎮 LISTA DE JUEGOS */
+const juegos=[
+{
+nombre:"DOOM Eternal",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/782330/header.jpg",
+desc:"Shooter brutal contra demonios en Marte y la Tierra.",
+req:"8GB RAM / GTX 1060",
+peso:"50GB"
+},
+{
+nombre:"GTA V",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg",
+desc:"Mundo abierto criminal con historia y online.",
+req:"8GB RAM / GTX 660",
+peso:"100GB"
+},
+{
+nombre:"Minecraft",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/12900/header.jpg",
+desc:"Juego sandbox de construcción infinito.",
+req:"4GB RAM",
+peso:"1GB"
+},
+{
+nombre:"Cyberpunk 2077",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
+desc:"RPG futurista en Night City.",
+req:"12GB RAM / RTX",
+peso:"70GB"
+},
+{
+nombre:"Elden Ring",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
+desc:"RPG oscuro de mundo abierto tipo Souls.",
+req:"12GB RAM / GTX 1060",
+peso:"60GB"
+},
+{
+nombre:"Call of Duty Warzone",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1962663/header.jpg",
+desc:"Battle royale masivo y competitivo.",
+req:"16GB RAM",
+peso:"120GB"
+},
+{
+nombre:"Red Dead Redemption 2",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg",
+desc:"Historia épica del viejo oeste.",
+req:"12GB RAM",
+peso:"120GB"
+},
+{
+nombre:"Fortnite",
+img:"https://cdn.cloudflare.steamstatic.com/steam/apps/12210/header.jpg",
+desc:"Battle royale con construcción.",
+req:"8GB RAM",
+peso:"30GB"
+}
 ];
 
-const contenedor = document.getElementById("games");
+const cont=document.getElementById("juegos");
 
-juegos.forEach(juego => {
-  contenedor.innerHTML += `
-    <div class="game">
-      <img src="${juego.imagen}">
-      <h4>${juego.nombre}</h4>
-      <div class="btn">Descargar</div>
-    </div>
+/* MOSTRAR JUEGOS */
+juegos.forEach(j=>{
+  cont.innerHTML+=`
+  <div class="card" onclick="verJuego('${j.nombre}')">
+    <img src="${j.img}">
+    <p>${j.nombre}</p>
+  </div>
   `;
 });
-</function abrirJuego(pagina) {
-  window.location.href = pagina;
-}>
 
-</<h1 class="titulo">🎮 Mi Biblioteca</h1>
+/* DETALLE */
+function verJuego(nombre){
+  const j=juegos.find(x=>x.nombre===nombre);
 
-<div class="grid-juegos">
+  app.style.display="none";
+  detalle.style.display="block";
 
-  <div class="juego" onclick="abrirJuego('paginas/gta5.html')">
-    <img src="juegos/gta5.jpg">
-    <p>GTA V</p>
-  </div>
+  detalle.innerHTML=`
+  <button onclick="volver()">⬅ Volver</button>
+  <h1>${j.nombre}</h1>
+  <img src="${j.img}" width="400">
+  <p>${j.desc}</p>
+  <p><b>Requisitos:</b> ${j.req}</p>
+  <p><b>Peso:</b> ${j.peso}</p>
+  <button onclick="alert('Función de descarga futura 😎')">Descargar</button>
+  `;
+}
 
-  <div class="juego" onclick="abrirJuego('paginas/doom.html')">
-    <img src="juegos/doom.jpg">
-    <p>DOOM</p>
-  </div>
+function volver(){
+  detalle.style.display="none";
+  app.style.display="block";
+}
 
-  <div class="juego" onclick="abrirJuego('paginas/minecraft.html')">
-    <img src="juegos/minecraft.jpg">
-    <p>Minecraft</p>
-  </div>
+</script>
 
-</div>>
+</body>
 </html>
