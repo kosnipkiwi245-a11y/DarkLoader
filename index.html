@@ -40,7 +40,7 @@ body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:linear-gradient(120deg,rgba(0,0,0,.9),rgba(80,0,0,.55),rgba(0,0,0,.95));
+  background:linear-gradient(120deg,rgba(0,0,0,.92),rgba(80,0,0,.55),rgba(0,0,0,.96));
   z-index:-2;
 }
 
@@ -99,8 +99,8 @@ button:hover{
 }
 
 .login-card{
-  width:380px;
-  background:rgba(10,10,10,.92);
+  width:390px;
+  background:rgba(10,10,10,.94);
   border:1px solid red;
   padding:25px;
   border-radius:14px;
@@ -110,7 +110,7 @@ button:hover{
 
 .login-card h2{color:red}
 
-input{
+input, select{
   width:100%;
   padding:12px;
   margin:8px 0;
@@ -120,7 +120,7 @@ input{
   border-radius:6px;
 }
 
-input:focus{
+input:focus, select:focus{
   outline:none;
   border-color:red;
   box-shadow:0 0 10px rgba(255,0,0,.4);
@@ -133,9 +133,7 @@ input:focus{
 
 .password-box input{flex:1}
 
-.password-box button{
-  padding:10px;
-}
+.password-box button{padding:10px}
 
 .barra{
   height:10px;
@@ -152,10 +150,15 @@ input:focus{
   transition:.3s;
 }
 
-#mensajeRegistro{
+.mensaje{
   min-height:20px;
   color:#ff5555;
   font-weight:bold;
+}
+
+hr{
+  border:1px solid #222;
+  margin:18px 0;
 }
 
 .navbar{
@@ -188,7 +191,7 @@ input:focus{
 .layout{display:flex}
 
 .sidebar{
-  width:240px;
+  width:250px;
   min-height:calc(100vh - 70px);
   background:rgba(10,10,10,.92);
   border-right:1px solid #222;
@@ -214,9 +217,9 @@ input:focus{
 .tooltip{
   display:none;
   position:absolute;
-  left:215px;
+  left:220px;
   top:0;
-  width:280px;
+  width:300px;
   background:#111;
   border:1px solid red;
   padding:12px;
@@ -225,7 +228,16 @@ input:focus{
   z-index:20;
 }
 
-.filtro:hover .tooltip{display:block}
+.filtro:hover .tooltip{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.tooltip button{
+  padding:8px 10px;
+  font-size:12px;
+}
 
 .contenido{
   flex:1;
@@ -340,6 +352,14 @@ input:focus{
 }
 
 .boton-mediafire:hover{background:#42b7ff}
+
+@media(max-width:800px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;min-height:auto}
+  .tooltip{position:static;width:100%;margin-top:8px}
+  .navbar{height:auto;flex-direction:column;gap:10px;padding:15px}
+  .inicio-contenido h1{font-size:38px}
+}
 </style>
 </head>
 
@@ -356,12 +376,14 @@ input:focus{
 </section>
 
 <section id="pantallaLogin" class="pantalla-login oculto">
+
   <div class="login-card" id="loginCard">
     <h2>Iniciar sesión</h2>
     <input id="loginUsuario" placeholder="Usuario">
     <input id="loginClave" type="password" placeholder="Contraseña">
     <button onclick="iniciarSesion()">Entrar</button>
     <button onclick="abrirRegistro()">Registrarse</button>
+    <button onclick="abrirRecuperacion()">Recuperar cuenta</button>
     <p>Cuenta guardada solo en este navegador.</p>
   </div>
 
@@ -381,11 +403,45 @@ input:focus{
 
     <div class="barra"><div id="barraSeguridad"></div></div>
     <p id="textoSeguridad">Seguridad: baja</p>
-    <p id="mensajeRegistro"></p>
+    <p id="mensajeRegistro" class="mensaje"></p>
 
     <button onclick="crearCuenta()">Crear cuenta</button>
     <button onclick="volverLogin()">Volver</button>
   </div>
+
+  <div class="login-card oculto" id="recuperarCard">
+    <h2>Recuperar cuenta</h2>
+
+    <input id="correoRecuperacion" type="email" placeholder="Correo electrónico">
+    <button onclick="enviarCodigoCorreo()">Enviar código por correo</button>
+
+    <hr>
+
+    <p>O recupera tu cuenta con número de teléfono</p>
+
+    <select id="paisTelefono">
+      <option value="+506">🇨🇷 Costa Rica +506</option>
+      <option value="+52">🇲🇽 México +52</option>
+      <option value="+1">🇺🇸 Estados Unidos +1</option>
+      <option value="+34">🇪🇸 España +34</option>
+      <option value="+57">🇨🇴 Colombia +57</option>
+      <option value="+54">🇦🇷 Argentina +54</option>
+      <option value="+56">🇨🇱 Chile +56</option>
+      <option value="+51">🇵🇪 Perú +51</option>
+    </select>
+
+    <input id="telefonoRecuperacion" type="tel" placeholder="Número de teléfono">
+    <button onclick="enviarCodigoTelefono()">Enviar código por SMS</button>
+
+    <hr>
+
+    <input id="codigoRecuperacion" placeholder="Código de verificación">
+    <button onclick="verificarCodigo()">Verificar código</button>
+    <button onclick="volverLogin()">Volver</button>
+
+    <p id="mensajeRecuperacion" class="mensaje"></p>
+  </div>
+
 </section>
 
 <section id="app" class="oculto">
@@ -404,19 +460,45 @@ input:focus{
       <h3>FILTROS</h3>
 
       <div class="filtro">Año
-        <div class="tooltip">1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026</div>
+        <div class="tooltip">
+          <button onclick="filtrarPor('año','2012')">2012</button>
+          <button onclick="filtrarPor('año','2015')">2015</button>
+          <button onclick="filtrarPor('año','2017')">2017</button>
+          <button onclick="filtrarPor('año','2018')">2018</button>
+          <button onclick="filtrarPor('año','2022')">2022</button>
+          <button onclick="filtrarPor('año','2024')">2024</button>
+          <button onclick="limpiarFiltro()">Todos</button>
+        </div>
       </div>
 
       <div class="filtro">Género
-        <div class="tooltip">Acción, Aventura, Indie, RPG, Arcade, Plataformas, Deducción social, Multijugador</div>
+        <div class="tooltip">
+          <button onclick="filtrarPor('genero','Acción')">Acción</button>
+          <button onclick="filtrarPor('genero','RPG')">RPG</button>
+          <button onclick="filtrarPor('genero','Indie')">Indie</button>
+          <button onclick="filtrarPor('genero','Multijugador')">Multijugador</button>
+          <button onclick="filtrarPor('genero','Plataformas')">Plataformas</button>
+          <button onclick="limpiarFiltro()">Todos</button>
+        </div>
       </div>
 
       <div class="filtro">Requisitos
-        <div class="tooltip">Bajos, medios, altos, 4GB RAM, 8GB RAM, 16GB RAM, GTX 960, GTX 1060, RTX</div>
+        <div class="tooltip">
+          <button onclick="filtrarPor('requisitos','1 GB')">Bajos</button>
+          <button onclick="filtrarPor('requisitos','3 GB')">Medios</button>
+          <button onclick="filtrarPor('requisitos','8 GB')">Altos</button>
+          <button onclick="filtrarPor('requisitos','GTX')">GTX</button>
+          <button onclick="limpiarFiltro()">Todos</button>
+        </div>
       </div>
 
       <div class="filtro">Peso
-        <div class="tooltip">Menos de 1GB, 1GB - 5GB, 5GB - 20GB, 20GB - 80GB, más de 80GB</div>
+        <div class="tooltip">
+          <button onclick="filtrarPeso('ligero')">Ligero</button>
+          <button onclick="filtrarPeso('medio')">Medio</button>
+          <button onclick="filtrarPeso('pesado')">Pesado</button>
+          <button onclick="limpiarFiltro()">Todos</button>
+        </div>
       </div>
     </aside>
 
@@ -453,7 +535,7 @@ input:focus{
       <p id="detalleRequisitos"></p>
 
       <a id="detalleDescarga" class="boton-mediafire" href="#" target="_blank">
-        Descargar vía MediaFire
+        Ver página oficial
       </a>
     </div>
   </main>
@@ -473,7 +555,7 @@ const juegos = [
       "https://cdn.cloudflare.steamstatic.com/steam/apps/945360/ss_8e1e9c5c4f8d9c8b6e0f6c7c5fcb99ebcde227a1.600x338.jpg",
       "https://cdn.cloudflare.steamstatic.com/steam/apps/945360/ss_4c8f08769412670c489f8266f320ad7235b1ee87.600x338.jpg"
     ],
-    mediafire:"LINK_MEDIAFIRE_AQUI"
+    enlace:"https://www.mediafire.com/file/36dar3o1x3x6dys/Among%20Us.rar"
   },
   {
     nombre:"Mecha Chameleon",
@@ -487,7 +569,7 @@ const juegos = [
       "https://images.unsplash.com/photo-1511512578047-dfb367046420",
       "https://images.unsplash.com/photo-1550745165-9bc0b252726f"
     ],
-    mediafire:"LINK_MEDIAFIRE_AQUI"
+    enlace:"#"
   },
   {
     nombre:"God of War 2018",
@@ -501,7 +583,7 @@ const juegos = [
       "https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/ss_f1bff24d3967a21d303d95e11ed892e3d9113057.600x338.jpg",
       "https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/ss_6eccc970b6f4d4c8f747b5dd4c0b8b5349c9a99d.600x338.jpg"
     ],
-    mediafire:"LINK_MEDIAFIRE_AQUI"
+    enlace:"https://store.steampowered.com/app/1593500/God_of_War/"
   },
   {
     nombre:"Undertale",
@@ -515,7 +597,7 @@ const juegos = [
       "https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_6ded97a2c98473ac1e8a2b3b7d143a2d3912ccf2.600x338.jpg",
       "https://cdn.cloudflare.steamstatic.com/steam/apps/391540/ss_b9018b4d7cd0c14a1786b1e4d6e9ef9b72d2b0a4.600x338.jpg"
     ],
-    mediafire:"LINK_MEDIAFIRE_AQUI"
+    enlace:"https://store.steampowered.com/app/391540/Undertale/"
   },
   {
     nombre:"Cuphead",
@@ -529,7 +611,7 @@ const juegos = [
       "https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_5389476f8a7a56f1d06bd8e3006c61c0b3a8d3ab.600x338.jpg",
       "https://cdn.cloudflare.steamstatic.com/steam/apps/268910/ss_48f4f916d9b66e04df04b3fa4de1b1f6764ef99a.600x338.jpg"
     ],
-    mediafire:"LINK_MEDIAFIRE_AQUI"
+    enlace:"https://store.steampowered.com/app/268910/Cuphead/"
   },
   {
     nombre:"Hotline Miami",
@@ -543,9 +625,11 @@ const juegos = [
       "https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_840d116d5c99f1de755c38b4c8af8b442a2ff319.600x338.jpg",
       "https://cdn.cloudflare.steamstatic.com/steam/apps/219150/ss_4b078cc3e3c9b76f3c40eb8fca5a8e7f6fd033fd.600x338.jpg"
     ],
-    mediafire:"LINK_MEDIAFIRE_AQUI"
+    enlace:"https://store.steampowered.com/app/219150/Hotline_Miami/"
   }
 ];
+
+let codigoTemporal = "";
 
 function mostrarLogin(){
   pantallaInicio.classList.add("oculto");
@@ -554,10 +638,18 @@ function mostrarLogin(){
 
 function abrirRegistro(){
   loginCard.classList.add("oculto");
+  recuperarCard.classList.add("oculto");
   registroCard.classList.remove("oculto");
 }
 
+function abrirRecuperacion(){
+  loginCard.classList.add("oculto");
+  registroCard.classList.add("oculto");
+  recuperarCard.classList.remove("oculto");
+}
+
 function volverLogin(){
+  recuperarCard.classList.add("oculto");
   registroCard.classList.add("oculto");
   loginCard.classList.remove("oculto");
 }
@@ -598,11 +690,13 @@ function crearCuenta(){
   const confirmar = confirmarClave.value;
 
   if(usuario === "" || clave === "" || confirmar === ""){
+    mensajeRegistro.style.color = "#ff5555";
     mensajeRegistro.innerText = "Completa todos los campos.";
     return;
   }
 
   if(clave !== confirmar){
+    mensajeRegistro.style.color = "#ff5555";
     mensajeRegistro.innerText = "Las contraseñas no coinciden.";
     return;
   }
@@ -627,6 +721,53 @@ function iniciarSesion(){
   }
 }
 
+function generarCodigo(){
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+function enviarCodigoCorreo(){
+  const correo = correoRecuperacion.value.trim();
+
+  if(correo === ""){
+    mensajeRecuperacion.style.color = "#ff5555";
+    mensajeRecuperacion.innerText = "Escribe tu correo electrónico.";
+    return;
+  }
+
+  codigoTemporal = generarCodigo();
+  mensajeRecuperacion.style.color = "limegreen";
+  mensajeRecuperacion.innerText = "Código generado. En versión real se enviaría al correo.";
+
+  alert("SIMULACIÓN: Código para " + correo + ": " + codigoTemporal);
+}
+
+function enviarCodigoTelefono(){
+  const prefijo = paisTelefono.value;
+  const telefono = telefonoRecuperacion.value.trim();
+
+  if(telefono === ""){
+    mensajeRecuperacion.style.color = "#ff5555";
+    mensajeRecuperacion.innerText = "Escribe tu número de teléfono.";
+    return;
+  }
+
+  codigoTemporal = generarCodigo();
+  mensajeRecuperacion.style.color = "limegreen";
+  mensajeRecuperacion.innerText = "Código generado. En versión real se enviaría por SMS.";
+
+  alert("SIMULACIÓN: Código para " + prefijo + telefono + ": " + codigoTemporal);
+}
+
+function verificarCodigo(){
+  if(codigoRecuperacion.value === codigoTemporal && codigoTemporal !== ""){
+    mensajeRecuperacion.style.color = "limegreen";
+    mensajeRecuperacion.innerText = "Cuenta verificada. Ahora puedes iniciar sesión.";
+  }else{
+    mensajeRecuperacion.style.color = "#ff5555";
+    mensajeRecuperacion.innerText = "Código incorrecto.";
+  }
+}
+
 function cerrarSesion(){
   location.reload();
 }
@@ -639,7 +780,8 @@ function mostrarJuegos(){
   .filter(j => 
     j.nombre.toLowerCase().includes(texto) ||
     j.genero.toLowerCase().includes(texto) ||
-    j.año.toLowerCase().includes(texto)
+    j.año.toLowerCase().includes(texto) ||
+    j.requisitos.toLowerCase().includes(texto)
   )
   .forEach((j,index)=>{
     catalogo.innerHTML += `
@@ -658,6 +800,45 @@ function mostrarJuegos(){
   });
 }
 
+function filtrarPor(campo, valor){
+  buscador.value = valor;
+  mostrarJuegos();
+}
+
+function filtrarPeso(tipo){
+  catalogo.innerHTML = "";
+
+  juegos.forEach((j,index)=>{
+    const peso = j.peso.toLowerCase();
+    let mostrar = false;
+
+    if(tipo === "ligero" && peso.includes("mb")) mostrar = true;
+    if(tipo === "medio" && (peso.includes("2 gb") || peso.includes("4 gb"))) mostrar = true;
+    if(tipo === "pesado" && (peso.includes("70 gb") || peso.includes("80 gb") || peso.includes("100 gb"))) mostrar = true;
+
+    if(mostrar){
+      catalogo.innerHTML += `
+        <div class="juego" onclick="abrirJuego(${index})">
+          <img src="${j.imagen}">
+          <div class="juego-info">
+            <h3>${j.nombre}</h3>
+            <div class="meta">
+              📅 Año: ${j.año}<br>
+              🎭 Género: ${j.genero}<br>
+              💾 Peso: ${j.peso}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  });
+}
+
+function limpiarFiltro(){
+  buscador.value = "";
+  mostrarJuegos();
+}
+
 function abrirJuego(index){
   const j = juegos[index];
 
@@ -674,9 +855,8 @@ function abrirJuego(index){
   `;
 
   detalleRequisitos.innerText = j.requisitos;
-
   detalleCapturas.innerHTML = j.capturas.map(c => `<img src="${c}">`).join("");
-  detalleDescarga.href = j.mediafire;
+  detalleDescarga.href = j.enlace;
 }
 
 function volverCatalogo(){
@@ -686,13 +866,14 @@ function volverCatalogo(){
 
 const canvas = document.getElementById("fondoAnimado");
 const ctx = canvas.getContext("2d");
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const caracteres = "01 DARKLOADER GAME OVER XP LEVEL 2026 ";
 const fontSize = 16;
-const columnas = canvas.width / fontSize;
-const drops = Array(Math.floor(columnas)).fill(1);
+let columnas = canvas.width / fontSize;
+let drops = Array(Math.floor(columnas)).fill(1);
 
 function dibujarFondo(){
   ctx.fillStyle = "rgba(0,0,0,.08)";
@@ -717,6 +898,8 @@ setInterval(dibujarFondo,40);
 window.addEventListener("resize",()=>{
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  columnas = canvas.width / fontSize;
+  drops = Array(Math.floor(columnas)).fill(1);
 });
 </script>
 
