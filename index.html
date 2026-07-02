@@ -118,7 +118,41 @@
       cursor: pointer;
     }
 
-  </style>
+  </body {
+  background: #0f172a;
+  color: white;
+  font-family: Arial;
+}
+
+.titulo {
+  text-align: center;
+  margin: 20px;
+}
+
+.grid-juegos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 200px);
+  gap: 20px;
+  justify-content: center;
+}
+
+.juego {
+  background: #1e293b;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.juego:hover {
+  transform: scale(1.05);
+  background: #334155;
+}
+
+.juego img {
+  width: 100%;
+  border-radius: 8px;
+}>
 </head>
 
 <body>
@@ -185,7 +219,28 @@ juegos.forEach(juego => {
     </div>
   `;
 });
-</script>
+</function abrirJuego(pagina) {
+  window.location.href = pagina;
+}>
 
-</body>
+</<h1 class="titulo">🎮 Mi Biblioteca</h1>
+
+<div class="grid-juegos">
+
+  <div class="juego" onclick="abrirJuego('paginas/gta5.html')">
+    <img src="juegos/gta5.jpg">
+    <p>GTA V</p>
+  </div>
+
+  <div class="juego" onclick="abrirJuego('paginas/doom.html')">
+    <img src="juegos/doom.jpg">
+    <p>DOOM</p>
+  </div>
+
+  <div class="juego" onclick="abrirJuego('paginas/minecraft.html')">
+    <img src="juegos/minecraft.jpg">
+    <p>Minecraft</p>
+  </div>
+
+</div>>
 </html>
