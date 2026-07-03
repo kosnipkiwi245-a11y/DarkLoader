@@ -632,7 +632,7 @@ hr{border:0;border-top:1px solid #242424;margin:18px 0}
     <a class="nav-item active" href="#" onclick="renderStore()">⌂ INICIO</a>
     <a class="nav-item" href="#" onclick="showFavorites()">▦ BIBLIOTECA</a>
     <a class="nav-item" href="#" onclick="openSocial('amigos')">♙ AMIGOS</a>
-    <a class="nav-item" href="#" onclick="openSocial('chat')">☵ CHAT</a>
+    <a class="nav-item" href="#" onclick="openSocial('chat')">☵ CHAT GLOBAL</a>
     <a class="nav-item" href="#" onclick="openSocial('actividad')">▤ NOTICIAS</a>
     <a class="nav-item" href="#" onclick="scrollToGame('Hotline Miami')">⇩ DESCARGAS</a>
     <a class="nav-item" href="#" onclick="openProfile()">⚙ AJUSTES</a>
@@ -694,7 +694,7 @@ hr{border:0;border-top:1px solid #242424;margin:18px 0}
       </div>
       <div class="tabs">
         <button onclick="socialTab('amigos')">👥 Amigos</button>
-        <button onclick="socialTab('chat')">💬 Chat</button>
+        <button onclick="socialTab('chat')">🌎 Chat global</button>
         <button onclick="socialTab('solicitudes')">📨 Solicitudes</button>
         <button onclick="socialTab('actividad')">📡 Actividad</button>
       </div>
@@ -720,12 +720,13 @@ hr{border:0;border-top:1px solid #242424;margin:18px 0}
       </div>
 
       <div id="tabChat" class="hidden">
-        <h3 id="chatTitle">Selecciona un amigo</h3>
-        <div id="chatBox" class="chat-box"></div>
+        <h3>Chat global</h3>
+        <p class="small">Este chat lo ven todos los usuarios registrados en DarkLoader. Para DM privado, ve a Amigos y haz clic en un usuario.</p>
+        <div id="globalChatBox" class="chat-box"></div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-          <input id="chatInput" placeholder="Escribe un mensaje..." style="flex:1;min-width:220px">
-          <button onclick="sendMessage()">Enviar</button>
-          <button class="secondary" onclick="chatBox.innerHTML=''">Limpiar pantalla</button>
+          <input id="globalChatInput" placeholder="Escribe en el chat global..." style="flex:1;min-width:220px">
+          <button onclick="sendGlobalMessage()">Enviar global</button>
+          <button class="secondary" onclick="globalChatBox.innerHTML=''">Limpiar pantalla</button>
         </div>
       </div>
 
@@ -735,6 +736,27 @@ hr{border:0;border-top:1px solid #242424;margin:18px 0}
 
       <div id="tabActividad" class="hidden">
         <div class="panel"><h3>Actividad global</h3><div id="globalActivity"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="dmModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-body">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+        <div>
+          <h2 id="dmTitle">Chat privado</h2>
+          <p class="small" id="dmSub">DM privado entre amigos.</p>
+        </div>
+        <button class="secondary" onclick="closeDM()">Cerrar</button>
+      </div>
+      <div id="dmChatBox" class="chat-box"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <input id="dmInput" placeholder="Escribe un mensaje privado..." style="flex:1;min-width:220px">
+        <button onclick="sendDM()">Enviar DM</button>
+        <button class="secondary" onclick="dmChatBox.innerHTML=''">Limpiar pantalla</button>
       </div>
     </div>
   </div>
@@ -771,7 +793,7 @@ const db=getFirestore(fbApp);
 
 const $=id=>document.getElementById(id);
 let currentUser=null,currentProfile=null,currentFriend=null,currentFriendProfile=null,currentColor="#ff1b1b";
-let unsubProfile=null,unsubRequests=null,unsubActivity=null,unsubNotif=null,unsubChat=null;
+let unsubProfile=null,unsubRequests=null,unsubActivity=null,unsubNotif=null,unsubChat=null,unsubGlobalChat=null;
 
 const games=[
  {
@@ -791,7 +813,7 @@ const games=[
    "https://cdn.cloudflare.steamstatic.com/steam/apps/219150/header.jpg",
    "https://cdn.cloudflare.steamstatic.com/steam/apps/219150/capsule_616x353.jpg"
   ],
-  link:""
+  link:"https://store.steampowered.com/app/219150/Hotline_Miami/"
  },
  {
   name:"Cuphead",
@@ -810,7 +832,7 @@ const games=[
    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/268910/capsule_616x353.jpg",
    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/268910/header.jpg"
   ],
-  link:""
+  link:"https://store.steampowered.com/app/268910/Cuphead/"
  },
  {
   name:"Undertale",
@@ -859,18 +881,85 @@ window.closeProfile=()=>profileModal.classList.add("hidden")
 window.setColor=c=>{currentColor=c;document.documentElement.style.setProperty("--red",c)}
 window.saveProfile=async()=>{const nick=editNick.value.trim()||"Jugador";await updateDoc(doc(db,"users",currentUser.uid),{nickname:nick,nicknameLower:nickClean(nick),avatar:editAvatar.value.trim()||avatar(nick),banner:editBanner.value.trim(),bio:editBio.value.trim(),color:currentColor,lastSeen:serverTimestamp()});await loadProfile(currentUser.uid);await activity("actualizó su perfil","perfil");toastMsg("Perfil guardado.")}
 
-function startListeners(){if(unsubProfile)unsubProfile();if(unsubRequests)unsubRequests();if(unsubActivity)unsubActivity();if(unsubNotif)unsubNotif();unsubProfile=onSnapshot(doc(db,"users",currentUser.uid),s=>{if(s.exists()){currentProfile=s.data();renderFriends();}});unsubRequests=onSnapshot(query(collection(db,"friendRequests"),where("toUid","==",currentUser.uid),where("status","==","pending")),()=>renderRequests());unsubActivity=onSnapshot(query(collection(db,"activity"),orderBy("createdAt","desc"),limit(60)),snap=>renderActivity(snap.docs.map(d=>({id:d.id,...d.data()}))));unsubNotif=onSnapshot(query(collection(db,"notifications"),where("toUid","==",currentUser.uid),orderBy("createdAt","desc"),limit(40)),snap=>renderNotifications(snap.docs.map(d=>({id:d.id,...d.data()}))))}
+function startListeners(){if(unsubProfile)unsubProfile();if(unsubRequests)unsubRequests();if(unsubActivity)unsubActivity();if(unsubNotif)unsubNotif();unsubProfile=onSnapshot(doc(db,"users",currentUser.uid),s=>{if(s.exists()){currentProfile=s.data();renderFriends();}});unsubRequests=onSnapshot(query(collection(db,"friendRequests"),where("toUid","==",currentUser.uid),where("status","==","pending")),()=>renderRequests());unsubActivity=onSnapshot(query(collection(db,"activity"),orderBy("createdAt","desc"),limit(60)),snap=>renderActivity(snap.docs.map(d=>({id:d.id,...d.data()}))));unsubNotif=onSnapshot(query(collection(db,"notifications"),where("toUid","==",currentUser.uid),orderBy("createdAt","desc"),limit(40)),snap=>renderNotifications(snap.docs.map(d=>({id:d.id,...d.data()}))));listenGlobalChat()}
 
 window.searchUser=async()=>{const n=nickClean(userSearch.value);searchResult.innerHTML="Buscando...";if(!n){searchResult.innerHTML="Escribe un nickname.";return}const snap=await getDocs(query(collection(db,"users"),where("nicknameLower","==",n),limit(1)));if(snap.empty){searchResult.innerHTML="<p>No encontrado.</p>";return}const u=snap.docs[0].data();if(u.uid===currentUser.uid){searchResult.innerHTML="<p>Eres tú 😎</p>";return}searchResult.innerHTML=`<div class="list-item">👤 ${u.nickname}<br><button onclick="sendFriendRequest('${u.uid}','${u.nickname}')">Agregar</button></div>`}
 window.sendFriendRequest=async(uid,nick)=>{const id=chatId(currentUser.uid,uid);await setDoc(doc(db,"friendRequests",id),{fromUid:currentUser.uid,fromNick:currentProfile.nickname,toUid:uid,toNick:nick,status:"pending",createdAt:serverTimestamp()});await notify(uid,"friend_request",`${currentProfile.nickname} te envió una solicitud de amistad`,{requestId:id});await activity("envió solicitud a "+nick,"amigo");toastMsg("Solicitud enviada.")}
 async function renderRequests(){const snap=await getDocs(query(collection(db,"friendRequests"),where("toUid","==",currentUser.uid),where("status","==","pending")));requestList.innerHTML=snap.docs.map(d=>{const r=d.data();return `<div class="list-item">📨 ${r.fromNick} quiere agregarte<br><button onclick="acceptRequest('${d.id}','${r.fromUid}','${r.fromNick}')">Aceptar</button> <button class="secondary" onclick="rejectRequest('${d.id}')">Rechazar</button></div>`}).join("")||"<p>No hay solicitudes.</p>"}
 window.acceptRequest=async(id,fromUid,fromNick)=>{await updateDoc(doc(db,"friendRequests",id),{status:"accepted"});await updateDoc(doc(db,"users",currentUser.uid),{friends:arrayUnion(fromUid)});await updateDoc(doc(db,"users",fromUid),{friends:arrayUnion(currentUser.uid)});await notify(fromUid,"friend_accept",`${currentProfile.nickname} aceptó tu solicitud de amistad`);await activity("ahora es amigo de "+fromNick,"amigo");toastMsg("Solicitud aceptada.")}
 window.rejectRequest=async(id)=>{await updateDoc(doc(db,"friendRequests",id),{status:"rejected"});toastMsg("Solicitud rechazada.")}
-async function renderFriends(){const friends=currentProfile?.friends||[];if(!friends.length){friendList.innerHTML="<p>No tienes amigos todavía.</p>";return}let html="";for(const uid of friends){const s=await getDoc(doc(db,"users",uid));if(s.exists()){const u=s.data();html+=`<div class="list-item"><span class="friend-name" onclick="selectFriend('${u.uid}')">🟢 ${u.nickname}</span><div class="small">Estado: ${u.status||"online"}</div><button onclick="removeFriend('${u.uid}')">Eliminar</button></div>`}}friendList.innerHTML=html}
+async function renderFriends(){const friends=currentProfile?.friends||[];if(!friends.length){friendList.innerHTML="<p>No tienes amigos todavía.</p>";return}let html="";for(const uid of friends){const s=await getDoc(doc(db,"users",uid));if(s.exists()){const u=s.data();html+=`<div class="list-item"><span class="friend-name" onclick="openDM('${u.uid}')">🟢 ${u.nickname}</span><div class="small">Estado: ${u.status||"online"}</div><button onclick="removeFriend('${u.uid}')">Eliminar</button></div>`}}friendList.innerHTML=html}
 window.removeFriend=async(uid)=>{await updateDoc(doc(db,"users",currentUser.uid),{friends:arrayRemove(uid)});await updateDoc(doc(db,"users",uid),{friends:arrayRemove(currentUser.uid)});toastMsg("Amigo eliminado.")}
-window.selectFriend=async(uid)=>{const s=await getDoc(doc(db,"users",uid));if(!s.exists())return;currentFriend=uid;currentFriendProfile=s.data();friendProfileTitle.innerText=currentFriendProfile.nickname;friendProfile.innerHTML=`<p><img class="avatar" src="${currentFriendProfile.avatar||avatar(currentFriendProfile.nickname)}"> <b>${currentFriendProfile.nickname}</b></p><p>Estado: ${currentFriendProfile.status||"online"}</p><p>${currentFriendProfile.bio||""}</p><button onclick="socialTab('chat')">Abrir chat</button>`;socialTab("chat");listenChat()}
-function listenChat(){if(unsubChat)unsubChat();const id=chatId(currentUser.uid,currentFriend);unsubChat=onSnapshot(query(collection(db,"chats",id,"messages"),orderBy("createdAt","asc"),limit(100)),snap=>{let html="";snap.docs.forEach(d=>{const m=d.data(),mine=m.fromUid===currentUser.uid;html+=`<div class="bubble ${mine?"me":"friend"}"><b>${mine?"Tú":currentFriendProfile.nickname}:</b> ${m.text||""}<div class="small">${m.createdAt?.toDate?.().toLocaleString?.()||""}</div></div>`});chatBox.innerHTML=html;chatBox.scrollTop=chatBox.scrollHeight})}
-window.sendMessage=async()=>{if(!currentFriend){alert("Selecciona un amigo.");return}const text=chatInput.value.trim();if(!text)return;const id=chatId(currentUser.uid,currentFriend);await setDoc(doc(db,"chats",id),{members:[currentUser.uid,currentFriend],updatedAt:serverTimestamp()},{merge:true});await addDoc(collection(db,"chats",id,"messages"),{fromUid:currentUser.uid,text,createdAt:serverTimestamp()});await notify(currentFriend,"message",`${currentProfile.nickname}: ${text.slice(0,80)}`);chatInput.value=""}
+window.openDM=async(uid)=>{
+  const s=await getDoc(doc(db,"users",uid));
+  if(!s.exists())return;
+  currentFriend=uid;
+  currentFriendProfile=s.data();
+  friendProfileTitle.innerText=currentFriendProfile.nickname;
+  friendProfile.innerHTML=`<p><img class="avatar" src="${currentFriendProfile.avatar||avatar(currentFriendProfile.nickname)}"> <b>${currentFriendProfile.nickname}</b></p><p>Estado: ${currentFriendProfile.status||"online"}</p><p>${currentFriendProfile.bio||""}</p><button onclick="openDM('${currentFriendProfile.uid}')">Abrir DM privado</button>`;
+  dmTitle.innerText="DM con "+currentFriendProfile.nickname;
+  dmSub.innerText="Chat privado entre tú y "+currentFriendProfile.nickname;
+  dmModal.classList.remove("hidden");
+  listenDM();
+};
+
+window.closeDM=()=>{
+  dmModal.classList.add("hidden");
+};
+
+function listenDM(){
+  if(unsubChat)unsubChat();
+  const id=chatId(currentUser.uid,currentFriend);
+  unsubChat=onSnapshot(query(collection(db,"chats",id,"messages"),orderBy("createdAt","asc"),limit(100)),snap=>{
+    let html="";
+    snap.docs.forEach(d=>{
+      const m=d.data(),mine=m.fromUid===currentUser.uid;
+      html+=`<div class="bubble ${mine?"me":"friend"}"><b>${mine?"Tú":currentFriendProfile.nickname}:</b> ${m.text||""}<div class="small">${m.createdAt?.toDate?.().toLocaleString?.()||""}</div></div>`;
+    });
+    dmChatBox.innerHTML=html;
+    dmChatBox.scrollTop=dmChatBox.scrollHeight;
+  });
+}
+
+window.sendDM=async()=>{
+  if(!currentFriend){alert("Selecciona un amigo.");return}
+  const text=dmInput.value.trim();
+  if(!text)return;
+  const id=chatId(currentUser.uid,currentFriend);
+  await setDoc(doc(db,"chats",id),{members:[currentUser.uid,currentFriend],updatedAt:serverTimestamp()},{merge:true});
+  await addDoc(collection(db,"chats",id,"messages"),{fromUid:currentUser.uid,text,createdAt:serverTimestamp()});
+  await notify(currentFriend,"message",`${currentProfile.nickname}: ${text.slice(0,80)}`);
+  dmInput.value="";
+};
+
+function listenGlobalChat(){
+  if(unsubGlobalChat)unsubGlobalChat();
+  unsubGlobalChat=onSnapshot(query(collection(db,"globalChat"),orderBy("createdAt","asc"),limit(120)),snap=>{
+    let html="";
+    snap.docs.forEach(d=>{
+      const m=d.data(),mine=m.fromUid===currentUser.uid;
+      html+=`<div class="bubble ${mine?"me":"friend"}"><b>${mine?"Tú":m.nickname||"Usuario"}:</b> ${m.text||""}<div class="small">${m.createdAt?.toDate?.().toLocaleString?.()||""}</div></div>`;
+    });
+    if(globalChatBox){
+      globalChatBox.innerHTML=html;
+      globalChatBox.scrollTop=globalChatBox.scrollHeight;
+    }
+  });
+}
+
+window.sendGlobalMessage=async()=>{
+  const text=globalChatInput.value.trim();
+  if(!text)return;
+  await addDoc(collection(db,"globalChat"),{
+    fromUid:currentUser.uid,
+    nickname:currentProfile?.nickname||"Jugador",
+    avatar:currentProfile?.avatar||avatar("x"),
+    text,
+    createdAt:serverTimestamp()
+  });
+  await activity("escribió en el chat global","chat_global");
+  globalChatInput.value="";
+};
 
 function renderNotifications(items){const unread=items.filter(n=>!n.read).length;notifCount.innerText=unread;notifCount.classList.toggle("hidden",unread===0);notifList.innerHTML=items.map(n=>{let actions=`<button onclick="markNotif('${n.id}')">Marcar leído</button>`;if(n.type==="friend_request")actions=`<button onclick="acceptRequestFromNotif('${n.requestId}','${n.fromUid}','${n.fromNick}','${n.id}')">Aceptar</button> <button class="secondary" onclick="rejectRequestFromNotif('${n.requestId}','${n.id}')">Rechazar</button>`;if(n.type==="message")actions=`<button onclick="openChatFromNotif('${n.fromUid}','${n.id}')">Abrir chat</button>`;return `<div class="notif-item ${n.read?"":"unread"}"><p>${n.text}</p><div class="small">${n.createdAt?.toDate?.().toLocaleString?.()||""}</div>${actions}</div>`}).join("")||"<p>No hay notificaciones.</p>"}
 window.toggleNotifications=()=>notifPanel.classList.toggle("hidden")
@@ -878,7 +967,7 @@ window.markNotif=async id=>updateDoc(doc(db,"notifications",id),{read:true})
 window.markAllRead=async()=>{const snap=await getDocs(query(collection(db,"notifications"),where("toUid","==",currentUser.uid),where("read","==",false)));for(const d of snap.docs)await updateDoc(doc(db,"notifications",d.id),{read:true})}
 window.acceptRequestFromNotif=async(reqId,uid,nick,notif)=>{await acceptRequest(reqId,uid,nick);await markNotif(notif)}
 window.rejectRequestFromNotif=async(reqId,notif)=>{await rejectRequest(reqId);await markNotif(notif)}
-window.openChatFromNotif=async(uid,notif)=>{await markNotif(notif);notifPanel.classList.add("hidden");openSocial("chat");setTimeout(()=>selectFriend(uid),250)}
+window.openChatFromNotif=async(uid,notif)=>{await markNotif(notif);notifPanel.classList.add("hidden");openSocial("chat");setTimeout(()=>openDM(uid),250)}
 
 function renderActivity(items){const html=items.map(x=>`<div class="activity"><b>${x.nickname||"Jugador"}</b>: ${x.text}<div class="small">${x.createdAt?.toDate?.().toLocaleString?.()||""}</div></div>`).join("")||"<p>Sin actividad.</p>";globalActivity.innerHTML=html;friendActivity.innerHTML=html}
 window.openSocial=(tab="amigos")=>{socialModal.classList.remove("hidden");renderFriends();renderRequests();socialTab(tab)}
